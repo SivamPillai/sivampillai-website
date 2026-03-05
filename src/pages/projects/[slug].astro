@@ -1,0 +1,69 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import Headline from "../../components/ui/Headline.astro";
+import RelatedContent from "../../components/thinking/RelatedContent.astro";
+
+type ProjectEntry = CollectionEntry<"projects">;
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => {
+    const slug = project.slug ?? project.id;
+    return {
+      params: { slug },
+      props: { project },
+    };
+  });
+}
+
+const { project } = Astro.props as { project: ProjectEntry };
+
+const metadata = {
+  title: project.data.title,
+  description: project.data.description,
+};
+---
+
+<BaseLayout {metadata} section="Projects">
+  <article class="px-4 py-8 sm:px-6 lg:px-8 md:py-12">
+    <div class="mx-auto max-w-3xl">
+      <Headline
+        tagline="Project"
+        title={project.data.title}
+        subtitle={project.data.description}
+        classes={{
+          container: "mb-6 text-left",
+          title:
+            "font-heading mb-3 text-3xl font-bold tracking-tight text-foreground md:text-4xl",
+          subtitle: "max-w-2xl text-base text-muted-foreground",
+        }}
+      />
+
+      <div class="mb-4 flex flex-wrap gap-2 text-xs text-muted-foreground">
+        {project.data.status && (
+          <span class="rounded-full bg-foreground/5 px-3 py-1">
+            {project.data.status}
+          </span>
+        )}
+        {Array.isArray(project.data.tags) &&
+          project.data.tags.map((tag) => (
+            <span class="rounded-full bg-foreground/5 px-3 py-1">
+              {tag}
+            </span>
+          ))}
+      </div>
+
+      <div class="prose prose-invert max-w-none text-sm leading-relaxed">
+        <p>
+          This is a placeholder page for a deeper project write-up. I’ll
+          eventually replace this with concrete details about problem framing,
+          data work, modeling decisions, and what actually shipped.
+        </p>
+      </div>
+
+      <RelatedContent currentId={project.id} tags={project.data.tags} />
+    </div>
+  </article>
+</BaseLayout>
+

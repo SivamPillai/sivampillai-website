@@ -1,0 +1,58 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import Headline from "../components/ui/Headline.astro";
+
+const quotes = await getCollection("quotes");
+
+const metadata = {
+  title: "Quotes",
+  description:
+    "Lines that I keep coming back to — for design, systems thinking, and how people change.",
+};
+---
+
+<BaseLayout {metadata} section="Quotes">
+  <section class="px-4 py-8 sm:px-6 lg:px-8 md:py-12">
+    <div class="mx-auto max-w-4xl">
+      <Headline
+        tagline="Quotes"
+        title="Lines worth keeping"
+        subtitle="A small, rotating collection of quotes that shape how I think about work, systems, and craft."
+        classes={{
+          container: "mb-10 text-left",
+          title:
+            "font-heading mb-3 text-3xl font-bold tracking-tight text-foreground md:text-4xl",
+          subtitle: "max-w-2xl text-base text-muted-foreground",
+        }}
+      />
+
+      <div class="space-y-6">
+        {quotes.map((item) => (
+          <figure class="reveal rounded-2xl border border-border bg-card/60 p-5">
+            <blockquote class="text-sm italic text-foreground">
+              “{item.data.quote}”
+            </blockquote>
+            <figcaption class="mt-2 text-xs text-muted-foreground">
+              {item.data.source}
+            </figcaption>
+            {item.data.description && (
+              <p class="mt-3 text-xs text-muted-foreground">
+                {item.data.description}
+              </p>
+            )}
+            <div class="mt-3 flex flex-wrap gap-2 text-[11px] text-muted-foreground">
+              {Array.isArray(item.data.tags) &&
+                item.data.tags.map((tag) => (
+                  <span class="rounded-full bg-foreground/5 px-3 py-1">
+                    {tag}
+                  </span>
+                ))}
+            </div>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+

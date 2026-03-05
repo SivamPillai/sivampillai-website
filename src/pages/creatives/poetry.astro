@@ -1,0 +1,56 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import Headline from "../../components/ui/Headline.astro";
+
+const poetry = (await getCollection("poetry")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const metadata = {
+  title: "Poetry",
+  description:
+    "Short poems and fragments — the kind that don’t fit in a deck but stick in the mind.",
+};
+---
+
+<BaseLayout {metadata} section="Poetry">
+  <section class="px-4 py-8 sm:px-6 lg:px-8 md:py-12">
+    <div class="mx-auto max-w-2xl">
+      <Headline
+        tagline="Poetry"
+        title="The quieter side of the work"
+        subtitle="Short poems and fragments."
+        classes={{
+          container: "mb-8 text-left",
+          title:
+            "font-heading mb-3 text-3xl font-bold tracking-tight text-foreground md:text-4xl",
+          subtitle: "text-base text-muted-foreground",
+        }}
+      />
+
+      <nav class="mb-4 text-sm">
+        <a href="/creatives" class="text-muted-foreground hover:text-primary"
+          >← Creatives</a
+        >
+      </nav>
+
+      <ul class="space-y-4">
+        {poetry.map((entry) => (
+          <li>
+            <article class="rounded-xl border border-border bg-card/60 px-4 py-3">
+              <h2 class="text-base font-semibold text-foreground">
+                {entry.data.title}
+              </h2>
+              {entry.data.description && (
+                <p class="mt-0.5 text-sm text-muted-foreground line-clamp-1">
+                  {entry.data.description}
+                </p>
+              )}
+            </article>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,142 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { siteConfig } from "../config/site";
+import Hero from "../components/widgets/Hero.astro";
+import Headline from "../components/ui/Headline.astro";
+import { getCollection } from "astro:content";
+
+const metadata = {
+  title: `${siteConfig.name} — AI systems, manufacturing, ideas, and musings`,
+  description:
+    "Personal site of Sivam Pillai — AI and systems engineering leader working on industrial intelligence, time-series ML, and energy-aware systems.",
+  ignoreTitleTemplate: true,
+};
+
+const [projects, essays, quotes, poetry] = await Promise.all([
+  getCollection("projects"),
+  getCollection("essays"),
+  getCollection("quotes"),
+  getCollection("poetry"),
+]);
+
+const featuredProject = projects[0];
+const featuredEssay = essays.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+)[0];
+const featuredQuote = quotes[0];
+const featuredCreative = poetry[0];
+---
+
+<BaseLayout {metadata}>
+  <Hero
+    title={`Sivam Pillai<br class="hidden md:block" /><span class="block text-3xl md:text-4xl bg-linear-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mt-2">AI systems • Manufacturing • Ideas • Musings</span>`}
+    tagline="CTO & Co-Founder | Applied AI for Industrial Systems | PhD"
+    description={`Hi, I’m Sivam. I build AI systems that turn industrial data into practical intelligence. Over the past eight years I’ve worked across machine learning, time-series modeling, and data systems, taking ideas from early research through to deployed products used in real environments. I’m particularly interested in technologies that make industry more autonomous, efficient, and energy-aware.`}
+    actions={[
+      {
+        text: "View projects",
+        href: "/projects",
+        variant: "primary",
+        icon: "lucide:folder-kanban",
+      },
+      {
+        text: "Read essays",
+        href: "/essays",
+        variant: "secondary",
+        icon: "lucide:pen-square",
+        ariaLabel: "Read essays and longer-form thinking",
+      },
+    ]}
+  />
+  {
+    (featuredProject || featuredEssay || featuredCreative || featuredQuote) && (
+      <section class="px-4 py-10 sm:px-6 lg:px-8 md:py-14">
+        <div class="mx-auto max-w-6xl">
+          <Headline
+            tagline="Featured"
+            title="A few starting points"
+            subtitle="A small sampler from across the site — one project, one essay, one creative, and one quote."
+            classes={{
+              container: "mb-8 text-left",
+              title:
+                "font-heading mb-3 text-2xl md:text-3xl font-bold tracking-tight text-foreground",
+              subtitle: "max-w-3xl text-sm text-muted-foreground",
+            }}
+          />
+          <div class="grid gap-4 md:grid-cols-4">
+            {featuredProject && (
+              <a
+                href={`/projects/${featuredProject.slug ?? featuredProject.id}`}
+                class="group rounded-2xl border border-border bg-card/60 p-4 text-sm transition-colors hover:border-primary/60"
+              >
+                <p class="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                  Project
+                </p>
+                <p class="mt-1 font-semibold text-foreground">
+                  {featuredProject.data.title}
+                </p>
+                {featuredProject.data.description && (
+                  <p class="mt-1 text-xs text-muted-foreground line-clamp-3">
+                    {featuredProject.data.description}
+                  </p>
+                )}
+              </a>
+            )}
+            {featuredEssay && (
+              <a
+                href={`/essays/${featuredEssay.slug ?? featuredEssay.id}`}
+                class="group rounded-2xl border border-border bg-card/60 p-4 text-sm transition-colors hover:border-primary/60"
+              >
+                <p class="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                  Essay
+                </p>
+                <p class="mt-1 font-semibold text-foreground">
+                  {featuredEssay.data.title}
+                </p>
+                {featuredEssay.data.description && (
+                  <p class="mt-1 text-xs text-muted-foreground line-clamp-3">
+                    {featuredEssay.data.description}
+                  </p>
+                )}
+              </a>
+            )}
+            {featuredCreative && (
+              <a
+                href="/creatives/poetry"
+                class="group rounded-2xl border border-border bg-card/60 p-4 text-sm transition-colors hover:border-primary/60"
+              >
+                <p class="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                  Creative
+                </p>
+                <p class="mt-1 font-semibold text-foreground">
+                  {featuredCreative.data.title}
+                </p>
+                {featuredCreative.data.description && (
+                  <p class="mt-1 text-xs text-muted-foreground line-clamp-3">
+                    {featuredCreative.data.description}
+                  </p>
+                )}
+              </a>
+            )}
+            {featuredQuote && (
+              <a
+                href={`/quotes/${featuredQuote.slug ?? featuredQuote.id}`}
+                class="group rounded-2xl border border-border bg-card/60 p-4 text-sm transition-colors hover:border-primary/60"
+              >
+                <p class="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                  Quote
+                </p>
+                <p class="mt-1 font-semibold text-foreground">
+                  {featuredQuote.data.title}
+                </p>
+                <p class="mt-1 text-xs italic text-muted-foreground line-clamp-3">
+                  “{featuredQuote.data.quote}”
+                </p>
+              </a>
+            )}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>

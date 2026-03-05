@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import Headline from "../../components/ui/Headline.astro";
+import RelatedContent from "../../components/thinking/RelatedContent.astro";
+
+type EssayEntry = CollectionEntry<"essays">;
+
+export async function getStaticPaths() {
+  const essays = await getCollection("essays");
+  return essays.map((essay) => {
+    const slug = essay.slug ?? essay.id;
+    return {
+      params: { slug },
+      props: { essay },
+    };
+  });
+}
+
+const { essay } = Astro.props as { essay: EssayEntry };
+const { Content } = await render(essay);
+
+const metadata = {
+  title: essay.data.title,
+  description: essay.data.description,
+};
+---
+
+<BaseLayout {metadata} section="Essays">
+  <article class="px-4 py-8 sm:px-6 lg:px-8 md:py-12">
+    <div class="mx-auto max-w-3xl">
+      <Headline
+        tagline="Essay"
+        title={essay.data.title}
+        subtitle={essay.data.description}
+        classes={{
+          container: "mb-6 text-left",
+          title:
+            "font-heading mb-3 text-3xl font-bold tracking-tight text-foreground md:text-4xl",
+          subtitle: "max-w-2xl text-base text-muted-foreground",
+        }}
+      />
+
+      <div class="mb-4 flex flex-wrap gap-2 text-xs text-muted-foreground">
+        <span>
+          {essay.data.pubDate.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}
+        </span>
+        {Array.isArray(essay.data.tags) &&
+          essay.data.tags.map((tag) => (
+            <span class="rounded-full bg-foreground/5 px-3 py-1">
+              {tag}
+            </span>
+          ))}
+      </div>
+
+      <div class="prose prose-invert max-w-none text-sm leading-relaxed">
+        <Content />
+      </div>
+
+      <RelatedContent currentId={essay.id} tags={essay.data.tags} />
+    </div>
+  </article>
+</BaseLayout>
+

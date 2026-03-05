@@ -1,0 +1,91 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Headline from "../components/ui/Headline.astro";
+import { Icon } from "astro-icon/components";
+
+const metadata = {
+  title: "Writing",
+  description:
+    "Essays, blog posts, quotes, and notes — longer-form thinking and quick observations in one place.",
+};
+
+const writingSections = [
+  {
+    title: "Essays",
+    description:
+      "Longer-form pieces on AI systems, manufacturing, and how ideas move from research into practice.",
+    href: "/essays",
+    icon: "lucide:pen-square",
+    iconClass: "bg-blue-500/10 text-blue-500 dark:text-blue-400",
+  },
+  {
+    title: "Blog",
+    description:
+      "Posts, updates, and shorter reflections — a mix of technical notes and what I’m learning.",
+    href: "/blog",
+    icon: "lucide:file-text",
+    iconClass: "bg-purple-500/10 text-purple-500 dark:text-purple-400",
+  },
+  {
+    title: "Quotes",
+    description:
+      "Lines I keep coming back to — on design, systems thinking, and how people and machines interact.",
+    href: "/quotes",
+    icon: "lucide:quote",
+    iconClass: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+  },
+  {
+    title: "Notes",
+    description:
+      "Rough, in-progress notes and observations — half-formed ideas and patterns from the field.",
+    href: "/notes",
+    icon: "lucide:sticky-note",
+    iconClass: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+  },
+];
+---
+
+<BaseLayout {metadata} section="Writing">
+  <section class="px-4 py-8 sm:px-6 lg:px-8 md:py-12">
+    <div class="mx-auto max-w-5xl">
+      <Headline
+        tagline="Writing"
+        title="Ideas in progress"
+        subtitle="Essays, blog, quotes, and notes — different ways of putting thoughts down."
+        classes={{
+          container: "mb-10 text-left",
+          title:
+            "font-heading mb-3 text-3xl font-bold tracking-tight text-foreground md:text-4xl",
+          subtitle: "max-w-3xl text-base text-muted-foreground",
+        }}
+      />
+
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {writingSections.map((item) => (
+          <a
+            href={item.href}
+            class="group flex flex-col rounded-2xl border border-border bg-card/60 p-5 transition-colors hover:border-primary/50 hover:bg-card"
+          >
+            <div
+              class={`mb-4 flex h-14 w-14 items-center justify-center rounded-xl ${item.iconClass}`}
+            >
+              <Icon name={item.icon} class="h-7 w-7" />
+            </div>
+            <h2 class="text-lg font-semibold text-foreground group-hover:text-primary">
+              {item.title}
+            </h2>
+            <p class="mt-1 flex-1 text-sm text-muted-foreground">
+              {item.description}
+            </p>
+            <span class="mt-3 inline-flex items-center text-sm font-medium text-primary">
+              Explore {item.title}
+              <span class="ml-1 transition-transform group-hover:translate-x-0.5"
+                >→</span
+              >
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

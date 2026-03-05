@@ -1,0 +1,160 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import Headline from "../../components/ui/Headline.astro";
+
+const photography = (await getCollection("photography")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const metadata = {
+  title: "Photography",
+  description:
+    "Visual notes from the field — light, texture, and the quiet moments around industrial spaces.",
+};
+---
+
+<BaseLayout {metadata} section="Photography">
+  <section class="px-4 py-8 sm:px-6 lg:px-8 md:py-12">
+    <div class="mx-auto max-w-5xl">
+      <Headline
+        tagline="Photography"
+        title="Visual notes"
+        subtitle="Light, texture, and the quiet moments around industrial spaces."
+        classes={{
+          container: "mb-8 text-left",
+          title:
+            "font-heading mb-3 text-3xl font-bold tracking-tight text-foreground md:text-4xl",
+          subtitle: "text-base text-muted-foreground",
+        }}
+      />
+
+      <nav class="mb-6 text-sm">
+        <a href="/creatives" class="text-muted-foreground hover:text-primary"
+          >← Creatives</a
+        >
+      </nav>
+
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6" id="gallery">
+        {photography.map((entry, i) => (
+          <button
+            type="button"
+            class="gallery-item group relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-border bg-card/60 text-left focus:outline-none focus:ring-2 focus:ring-primary"
+            data-index={i}
+            data-title={entry.data.title}
+            data-description={entry.data.description ?? ""}
+            data-location={entry.data.location ?? ""}
+            data-src={entry.data.image ?? ""}
+          >
+            {entry.data.image ? (
+              <img
+                src={entry.data.image}
+                alt={entry.data.title}
+                class="h-full w-full object-cover transition-transform group-hover:scale-105"
+                loading="lazy"
+              />
+            ) : (
+              <div
+                class="flex h-full w-full items-center justify-center bg-muted/50 text-muted-foreground"
+                aria-hidden="true"
+              >
+                <span class="text-sm font-medium">No image</span>
+              </div>
+            )}
+            <div
+              class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 pt-8"
+            >
+              <span class="text-sm font-semibold text-white">
+                {entry.data.title}
+              </span>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <dialog
+    id="lightbox"
+    class="fixed inset-0 z-[100] max-h-[100vh] w-full max-w-none border-0 bg-black/90 p-0 backdrop:bg-black/90 [&::backdrop]:bg-black/90"
+    aria-modal="true"
+    aria-label="Photo detail"
+  >
+    <div class="flex h-full w-full flex-col items-center justify-center p-4">
+      <button
+        type="button"
+        class="lightbox-close absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
+        aria-label="Close"
+      >
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div class="relative max-h-[85vh] max-w-4xl" id="lightbox-media">
+        <img
+          id="lightbox-img"
+          src=""
+          alt=""
+          class="max-h-[85vh] w-auto rounded-lg object-contain hidden"
+        />
+        <div id="lightbox-placeholder" class="hidden rounded-lg bg-white/5 px-8 py-12 text-white/60">
+          No image yet
+        </div>
+      </div>
+      <div class="mt-4 max-w-2xl text-center text-white">
+        <h2 id="lightbox-title" class="text-lg font-semibold"></h2>
+        <p id="lightbox-description" class="mt-1 text-sm text-white/80"></p>
+        <p id="lightbox-location" class="mt-0.5 text-xs text-white/60"></p>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    const dialog = document.getElementById("lightbox") as HTMLDialogElement;
+    const img = document.getElementById("lightbox-img") as HTMLImageElement;
+    const titleEl = document.getElementById("lightbox-title");
+    const descEl = document.getElementById("lightbox-description");
+    const locationEl = document.getElementById("lightbox-location");
+
+    const placeholder = document.getElementById("lightbox-placeholder");
+    function openLightbox(src: string, title: string, description: string, location: string) {
+      if (img && placeholder) {
+        if (src) {
+          img.src = src;
+          img.alt = title;
+          img.classList.remove("hidden");
+          placeholder.classList.add("hidden");
+        } else {
+          img.classList.add("hidden");
+          placeholder.classList.remove("hidden");
+        }
+      }
+      if (titleEl) titleEl.textContent = title;
+      if (descEl) descEl.textContent = description;
+      if (locationEl) locationEl.textContent = location;
+      dialog?.showModal();
+    }
+
+    function closeLightbox() {
+      dialog?.close();
+    }
+
+    document.querySelectorAll(".gallery-item").forEach((el) => {
+      el.addEventListener("click", () => {
+        const src = (el as HTMLElement).dataset.src ?? "";
+        const title = (el as HTMLElement).dataset.title ?? "";
+        const description = (el as HTMLElement).dataset.description ?? "";
+        const location = (el as HTMLElement).dataset.location ?? "";
+        openLightbox(src, title, description, location);
+      });
+    });
+
+    document.querySelector(".lightbox-close")?.addEventListener("click", closeLightbox);
+    dialog?.addEventListener("click", (e) => {
+      if (e.target === dialog) closeLightbox();
+    });
+    dialog?.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeLightbox();
+    });
+  </script>
+</BaseLayout>

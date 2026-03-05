@@ -1,0 +1,87 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getImage } from "astro:assets";
+import Content2 from "../components/widgets/Content2.astro";
+import Values from "../components/widgets/Values.astro";
+import aboutImage from "../assets/images/about-office.webp";
+
+const metadata = {
+  title: "About Sivam",
+  description:
+    "AI and systems engineering, time-series modeling, and industrial data — with a bias toward practical, deployed systems.",
+};
+
+const values = [
+  {
+    title: "Practical first",
+    description:
+      "I care less about fancy models and more about whether a plant engineer can trust and actually use the system.",
+  },
+  {
+    title: "Systems thinking",
+    description:
+      "Machines, data, people, incentives, and constraints all matter. Good AI respects the whole system, not just the dataset.",
+  },
+  {
+    title: "Clarity",
+    description:
+      "I try to turn noisy signals and complex ideas into language and visuals that non-ML folks can act on.",
+  },
+  {
+    title: "Craft",
+    description:
+      "From model design to slide decks, I like things that feel thoughtfully made — simple, but not simplistic.",
+  },
+  {
+    title: "Long-term thinking",
+    description:
+      "It’s not just about the first deployment. It’s about maintainable systems that keep learning with the factory.",
+  },
+  {
+    title: "Curiosity",
+    description:
+      "I keep a wide curiosity stack: physics, poetry, manufacturing, and how humans adopt technology in the real world.",
+  },
+];
+
+const optimizedImage = await getImage({
+  src: aboutImage,
+  format: "webp",
+});
+---
+
+<BaseLayout {metadata}>
+  <link slot="head" rel="preload" href={optimizedImage.src} as="image" />
+  <Content2
+    title="A bit about me"
+    description={[
+      "I’m an AI and systems engineering leader who enjoys building real-world products more than writing papers. For the past eight years I’ve worked across industrial data, time-series modeling, and large-scale monitoring systems.",
+      "Most of my work lives where sensors, control systems, and people meet: predicting machine health, spotting subtle process drifts, and using energy data as a window into how factories actually behave.",
+      "This site is a small thinking lab: a place to collect projects, essays, quotes, and creative experiments as I keep learning.",
+    ]}
+    tagline="About"
+    image={aboutImage}
+    imageAlt="Workspace with industrial and data tools"
+    actions={[
+      {
+        text: "See projects",
+        href: "/projects",
+        variant: "primary",
+        icon: "lucide:folder-kanban",
+      },
+      {
+        text: "Read essays",
+        href: "/essays",
+        variant: "secondary",
+        icon: "lucide:pen-square",
+      },
+    ]}
+  />
+  <Values
+    items={values}
+    columns={3}
+    tagline="Our Values"
+    title="What Defines Us"
+    subtitle="Principles that guide our daily work"
+  />
+</BaseLayout>

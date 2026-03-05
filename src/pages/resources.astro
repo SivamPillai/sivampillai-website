@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Headline from "../components/ui/Headline.astro";
+
+const metadata = {
+  title: "Resources",
+  description:
+    "Books, tools, and links I keep recommending around AI systems, manufacturing, and thinking clearly.",
+};
+---
+
+<BaseLayout {metadata}>
+  <section class="px-4 py-8 sm:px-6 lg:px-8 md:py-12">
+    <div class="mx-auto max-w-4xl space-y-8">
+      <Headline
+        tagline="Resources"
+        title="Things I keep pointing people to"
+        subtitle="This page will grow slowly. For now it’s a small set of books, tools, and links that shape how I work."
+        classes={{
+          container: "mb-4 text-left",
+          title:
+            "font-heading mb-3 text-3xl font-bold tracking-tight text-foreground md:text-4xl",
+          subtitle: "max-w-2xl text-sm text-muted-foreground",
+        }}
+      />
+
+      <div class="grid gap-8 md:grid-cols-2">
+        <div>
+          <h2 class="mb-2 text-base font-semibold">Books</h2>
+          <ul class="space-y-2 text-sm text-muted-foreground">
+            <li>
+              <span class="font-medium text-foreground">
+                (Placeholder) Systems thinking &amp; feedback
+              </span>
+              — book I reach for when I need to zoom out and think in loops, not
+              lines.
+            </li>
+            <li>
+              <span class="font-medium text-foreground">
+                (Placeholder) Industrial data &amp; controls
+              </span>
+              — something that bridges control systems, sensors, and data
+              engineering.
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="mb-2 text-base font-semibold">Tools</h2>
+          <ul class="space-y-2 text-sm text-muted-foreground">
+            <li>
+              Simple notebooks, good plotting tools, and a clear data log are
+              still the most underrated “ML tools” I know.
+            </li>
+            <li>
+              I’ll add specific libraries and platforms here once I’ve written
+              about how I use them in real projects.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="mb-2 text-base font-semibold">Links</h2>
+        <p class="text-sm text-muted-foreground">
+          I’ll eventually collect talks, papers, and essays here — with a short
+          note on why each link matters, not just a long list.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
