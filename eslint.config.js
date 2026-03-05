@@ -5,6 +5,8 @@ import eslintConfigPrettier from "eslint-config-prettier";
 import tseslint from "typescript-eslint";
 import globals from "globals";
 
+// Suppress deprecation hint from typescript-eslint typings (config is valid flat config)
+// @ts-expect-error TS6387
 export default tseslint.config(
   {
     ignores: ["dist/**", ".astro/**", "node_modules/**"],

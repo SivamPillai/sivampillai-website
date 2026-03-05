@@ -28,31 +28,32 @@ const metadata = {
       />
 
       <div class="space-y-6">
-        {quotes.map((item) => (
-          <figure class="reveal rounded-2xl border border-border bg-card/60 p-5">
-            <blockquote class="text-sm italic text-foreground">
-              “{item.data.quote}”
-            </blockquote>
-            <figcaption class="mt-2 text-xs text-muted-foreground">
-              {item.data.source}
-            </figcaption>
-            {item.data.description && (
-              <p class="mt-3 text-xs text-muted-foreground">
-                {item.data.description}
-              </p>
-            )}
-            <div class="mt-3 flex flex-wrap gap-2 text-[11px] text-muted-foreground">
-              {Array.isArray(item.data.tags) &&
-                item.data.tags.map((tag) => (
-                  <span class="rounded-full bg-foreground/5 px-3 py-1">
-                    {tag}
-                  </span>
-                ))}
-            </div>
-          </figure>
-        ))}
+        {
+          quotes.map((item) => (
+            <figure class="reveal rounded-2xl border border-border bg-card/60 p-5">
+              <blockquote class="text-sm italic text-foreground">
+                “{item.data.quote}”
+              </blockquote>
+              <figcaption class="mt-2 text-xs text-muted-foreground">
+                {item.data.source}
+              </figcaption>
+              {item.data.description && (
+                <p class="mt-3 text-xs text-muted-foreground">
+                  {item.data.description}
+                </p>
+              )}
+              <div class="mt-3 flex flex-wrap gap-2 text-[11px] text-muted-foreground">
+                {Array.isArray(item.data.tags) &&
+                  item.data.tags.map((tag) => (
+                    <span class="rounded-full bg-foreground/5 px-3 py-1">
+                      {tag}
+                    </span>
+                  ))}
+              </div>
+            </figure>
+          ))
+        }
       </div>
     </div>
   </section>
 </BaseLayout>
-

@@ -11,7 +11,7 @@ export default defineConfig({
     remarkPlugins: [
       remarkReadingTime,
       () => {
-        return function (tree, file) {
+        return function (_tree, file) {
           file.data.astro.frontmatter.minutesRead =
             file.data.readingTime.minutes;
         };

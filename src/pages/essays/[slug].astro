@@ -9,7 +9,7 @@ type EssayEntry = CollectionEntry<"essays">;
 export async function getStaticPaths() {
   const essays = await getCollection("essays");
   return essays.map((essay) => {
-    const slug = essay.slug ?? essay.id;
+    const slug = (essay as { id: string; slug?: string }).slug ?? essay.id;
     return {
       params: { slug },
       props: { essay },
@@ -43,18 +43,20 @@ const metadata = {
 
       <div class="mb-4 flex flex-wrap gap-2 text-xs text-muted-foreground">
         <span>
-          {essay.data.pubDate.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          })}
+          {
+            essay.data.pubDate.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })
+          }
         </span>
-        {Array.isArray(essay.data.tags) &&
-          essay.data.tags.map((tag) => (
-            <span class="rounded-full bg-foreground/5 px-3 py-1">
-              {tag}
-            </span>
-          ))}
+        {
+          Array.isArray(essay.data.tags) &&
+            essay.data.tags.map((tag) => (
+              <span class="rounded-full bg-foreground/5 px-3 py-1">{tag}</span>
+            ))
+        }
       </div>
 
       <div class="prose prose-invert max-w-none text-sm leading-relaxed">
@@ -65,4 +67,3 @@ const metadata = {
     </div>
   </article>
 </BaseLayout>
-

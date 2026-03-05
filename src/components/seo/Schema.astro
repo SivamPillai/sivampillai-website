@@ -28,7 +28,7 @@ if (type === "WebSite") {
       "@type": "Person",
       name: siteConfig.author,
     },
-    sameAs: [siteConfig.socialLinks.twitter, siteConfig.socialLinks.github],
+    sameAs: [siteConfig.socialLinks.x, siteConfig.socialLinks.github],
   };
 } else if (type === "BlogPosting") {
   schema = {
@@ -59,4 +59,8 @@ if (type === "WebSite") {
 }
 ---
 
-<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+<script
+  is:inline
+  type="application/ld+json"
+  set:html={JSON.stringify(schema)}
+/>

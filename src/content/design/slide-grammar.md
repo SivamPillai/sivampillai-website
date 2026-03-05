@@ -10,6 +10,7 @@ tags: ["design", "communication", "storytelling"]
 I enjoy designing slides almost as much as building models.
 
 This entry will eventually outline a simple grammar I use for:
+
 - explaining complex systems to non-technical leaders,
 - keeping visual noise low while preserving nuance,
 - and blending diagrams, numbers, and narrative.

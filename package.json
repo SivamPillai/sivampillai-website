@@ -14,7 +14,8 @@
     "test": "vitest",
     "check": "astro check",
     "typecheck": "tsc --noEmit",
-    "build-preview": "npm run build && npm run preview"
+    "build-preview": "npm run build && npm run preview",
+    "deploy": "npm run build && firebase deploy"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.2",

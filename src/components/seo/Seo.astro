@@ -51,21 +51,27 @@ const canonicalURL =
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
-{ogImageSrc && (
-  <meta property="og:image" content={new URL(ogImageSrc, siteConfig.url)} />
-)}
+{
+  ogImageSrc && (
+    <meta property="og:image" content={new URL(ogImageSrc, siteConfig.url)} />
+  )
+}
 <meta property="og:locale" content={siteConfig.locale} />
 
 <!-- Twitter -->
-<meta property="twitter:card" content={ogImageSrc ? "summary_large_image" : "summary"} />
+<meta
+  property="twitter:card"
+  content={ogImageSrc ? "summary_large_image" : "summary"}
+/>
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={fullTitle} />
 <meta property="twitter:description" content={description} />
-{ogImageSrc && (
-  <meta property="twitter:image" content={new URL(ogImageSrc, siteConfig.url)} />
-)}
 {
-  siteConfig.twitter && (
-    <meta property="twitter:creator" content={siteConfig.twitter} />
+  ogImageSrc && (
+    <meta
+      property="twitter:image"
+      content={new URL(ogImageSrc, siteConfig.url)}
+    />
   )
 }
+{siteConfig.x && <meta property="twitter:creator" content={siteConfig.x} />}

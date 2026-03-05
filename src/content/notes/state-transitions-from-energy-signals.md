@@ -12,6 +12,7 @@ Quick, rough note.
 I’m collecting small patterns I keep seeing in factories: motors announcing load changes, pumps revealing cavitation, and ovens whispering about control issues — all through energy traces.
 
 This note is a reminder to document:
+
 - simple heuristics that work surprisingly well,
 - failure modes when the data lies,
 - and how these patterns can seed better ML features.

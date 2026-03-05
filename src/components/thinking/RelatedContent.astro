@@ -9,7 +9,14 @@ interface Props {
 
 const { currentId, tags } = Astro.props as Props;
 
-const allCollections = ["projects", "essays", "notes", "quotes", "blog"] as const;
+const allCollections = [
+  "projects",
+  "essays",
+  "notes",
+  "quotes",
+  "blog",
+] as const;
+type CollectionName = (typeof allCollections)[number];
 
 type AnyEntry =
   | CollectionEntry<"projects">
@@ -24,11 +31,11 @@ async function getRelated() {
   const results: Record<string, AnyEntry[]> = {};
 
   for (const name of allCollections) {
-    const entries = await getCollection(name as any);
+    const entries = (await getCollection(name as CollectionName)) as AnyEntry[];
     const related = entries
-      .filter((entry) => entry.id !== currentId)
-      .filter((entry) => {
-        const entryTags = (entry.data as any).tags ?? [];
+      .filter((entry: AnyEntry) => entry.id !== currentId)
+      .filter((entry: AnyEntry) => {
+        const entryTags = (entry.data as { tags?: string[] }).tags ?? [];
         return entryTags.some((tag: string) => tags.includes(tag));
       })
       .slice(0, 3);
@@ -47,25 +54,25 @@ const hasAny =
   Object.values(related).some((list) => list && list.length > 0);
 ---
 
-{hasAny && (
-  <section class="mt-16 border-t border-border pt-10">
-    <Headline
-      title="Related from the thinking lab"
-      subtitle="Other things connected by tags — essays, projects, quotes, and notes."
-      classes={{
-        container: "mb-8",
-        title:
-          "text-2xl md:text-3xl font-semibold tracking-tight text-foreground",
-        subtitle: "text-sm text-muted-foreground max-w-xl",
-      }}
-    />
+{
+  hasAny && (
+    <section class="mt-16 border-t border-border pt-10">
+      <Headline
+        title="Related from the thinking lab"
+        subtitle="Other things connected by tags — essays, projects, quotes, and notes."
+        classes={{
+          container: "mb-8",
+          title:
+            "text-2xl md:text-3xl font-semibold tracking-tight text-foreground",
+          subtitle: "text-sm text-muted-foreground max-w-xl",
+        }}
+      />
 
-    <div class="grid gap-8 md:grid-cols-3">
-      {Object.entries(related).map(([key, entries]) => (
-        <div>
-          <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            {
-              key === "projects"
+      <div class="grid gap-8 md:grid-cols-3">
+        {Object.entries(related).map(([key, entries]) => (
+          <div>
+            <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              {key === "projects"
                 ? "Related Projects"
                 : key === "essays"
                   ? "Related Essays"
@@ -73,40 +80,40 @@ const hasAny =
                     ? "Related Notes"
                     : key === "quotes"
                       ? "Related Quotes"
-                      : "Related Blog"
-            }
-          </h3>
-          <ul class="space-y-2 text-sm">
-            {entries.map((entry) => {
-              const slug = entry.slug ?? entry.id;
-              const base =
-                key === "blog"
-                  ? "/blog"
-                  : key === "projects"
-                    ? "/projects"
-                    : key === "essays"
-                      ? "/essays"
-                      : key === "notes"
-                        ? "/notes"
-                        : key === "quotes"
-                          ? "/quotes"
-                          : `/${key}`;
-              const href = slug ? `${base}/${slug}` : base;
-              return (
-                <li>
-                  <a
-                    href={href}
-                    class="text-foreground hover:text-primary underline-offset-2 hover:underline"
-                  >
-                    {(entry.data as any).title ?? entry.slug}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      ))}
-    </div>
-  </section>
-)}
-
+                      : "Related Blog"}
+            </h3>
+            <ul class="space-y-2 text-sm">
+              {entries.map((entry) => {
+                const slug =
+                  (entry as AnyEntry & { slug?: string }).slug ?? entry.id;
+                const base =
+                  key === "blog"
+                    ? "/blog"
+                    : key === "projects"
+                      ? "/projects"
+                      : key === "essays"
+                        ? "/essays"
+                        : key === "notes"
+                          ? "/notes"
+                          : key === "quotes"
+                            ? "/quotes"
+                            : `/${key}`;
+                const href = slug ? `${base}/${slug}` : base;
+                return (
+                  <li>
+                    <a
+                      href={href}
+                      class="text-foreground hover:text-primary underline-offset-2 hover:underline"
+                    >
+                      {(entry.data as { title?: string }).title ?? entry.id}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}

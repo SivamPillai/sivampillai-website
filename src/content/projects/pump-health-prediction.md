@@ -14,6 +14,7 @@ tags: ["AI", "manufacturing", "predictive-maintenance", "energy"]
 This is a placeholder case study for an industrial pump health monitoring system.
 
 I’ll replace this with a detailed write-up on:
+
 - how we shaped the problem with reliability engineers,
 - what signals turned out to matter most,
 - and how we balanced model complexity with operator trust.

@@ -66,7 +66,7 @@ const featuredCreative = poetry[0];
           <div class="grid gap-4 md:grid-cols-4">
             {featuredProject && (
               <a
-                href={`/projects/${featuredProject.slug ?? featuredProject.id}`}
+                href={`/projects/${(featuredProject as { id: string; slug?: string }).slug ?? featuredProject.id}`}
                 class="group rounded-2xl border border-border bg-card/60 p-4 text-sm transition-colors hover:border-primary/60"
               >
                 <p class="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
@@ -84,7 +84,7 @@ const featuredCreative = poetry[0];
             )}
             {featuredEssay && (
               <a
-                href={`/essays/${featuredEssay.slug ?? featuredEssay.id}`}
+                href={`/essays/${(featuredEssay as { id: string; slug?: string }).slug ?? featuredEssay.id}`}
                 class="group rounded-2xl border border-border bg-card/60 p-4 text-sm transition-colors hover:border-primary/60"
               >
                 <p class="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
@@ -120,7 +120,7 @@ const featuredCreative = poetry[0];
             )}
             {featuredQuote && (
               <a
-                href={`/quotes/${featuredQuote.slug ?? featuredQuote.id}`}
+                href={`/quotes/${(featuredQuote as { id: string; slug?: string }).slug ?? featuredQuote.id}`}
                 class="group rounded-2xl border border-border bg-card/60 p-4 text-sm transition-colors hover:border-primary/60"
               >
                 <p class="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">

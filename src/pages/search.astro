@@ -4,7 +4,8 @@ import Headline from "../components/ui/Headline.astro";
 
 const metadata = {
   title: "Search",
-  description: "Search across essays, blog, projects, notes, quotes, and creatives.",
+  description:
+    "Search across essays, blog, projects, notes, quotes, and creatives.",
 };
 ---
 
@@ -24,7 +25,10 @@ const metadata = {
       />
 
       <div class="mb-6 flex flex-wrap items-center gap-3">
-        <label for="search-section" class="text-sm font-medium text-muted-foreground">
+        <label
+          for="search-section"
+          class="text-sm font-medium text-muted-foreground"
+        >
           Section
         </label>
         <select
@@ -50,15 +54,18 @@ const metadata = {
   </section>
 
   <link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
-  <script src="/pagefind/pagefind-ui.js"></script>
+  <script is:inline src="/pagefind/pagefind-ui.js"></script>
   <script is:inline>
     window.addEventListener("DOMContentLoaded", function () {
       if (typeof PagefindUI !== "undefined") {
-        var search = new PagefindUI({ element: "#search", showSubResults: true });
-        var select = document.getElementById("search-section");
+        const search = new PagefindUI({
+          element: "#search",
+          showSubResults: true,
+        });
+        const select = document.getElementById("search-section");
         if (select) {
           select.addEventListener("change", function () {
-            var value = select.value;
+            const value = select.value;
             if (value) {
               search.triggerFilters({ Section: [value] });
             } else {

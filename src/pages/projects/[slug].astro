@@ -9,7 +9,7 @@ type ProjectEntry = CollectionEntry<"projects">;
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
   return projects.map((project) => {
-    const slug = project.slug ?? project.id;
+    const slug = (project as { id: string; slug?: string }).slug ?? project.id;
     return {
       params: { slug },
       props: { project },
@@ -41,17 +41,19 @@ const metadata = {
       />
 
       <div class="mb-4 flex flex-wrap gap-2 text-xs text-muted-foreground">
-        {project.data.status && (
-          <span class="rounded-full bg-foreground/5 px-3 py-1">
-            {project.data.status}
-          </span>
-        )}
-        {Array.isArray(project.data.tags) &&
-          project.data.tags.map((tag) => (
+        {
+          project.data.status && (
             <span class="rounded-full bg-foreground/5 px-3 py-1">
-              {tag}
+              {project.data.status}
             </span>
-          ))}
+          )
+        }
+        {
+          Array.isArray(project.data.tags) &&
+            project.data.tags.map((tag) => (
+              <span class="rounded-full bg-foreground/5 px-3 py-1">{tag}</span>
+            ))
+        }
       </div>
 
       <div class="prose prose-invert max-w-none text-sm leading-relaxed">
@@ -66,4 +68,3 @@ const metadata = {
     </div>
   </article>
 </BaseLayout>
-

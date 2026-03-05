@@ -23,7 +23,7 @@ async function saveTraffic() {
   if (fs.existsSync(filePath)) {
     try {
       localData = JSON.parse(fs.readFileSync(filePath, "utf8"));
-    } catch (e) {
+    } catch (_e) {
       console.warn(
         "⚠️ Warning: Error reading existing clones.json, starting fresh.",
       );
@@ -58,7 +58,8 @@ async function saveTraffic() {
     clones: combinedClones,
   };
 
-  if (!fs.existsSync("./.github/data")) fs.mkdirSync("./.github/data", { recursive: true });
+  if (!fs.existsSync("./.github/data"))
+    fs.mkdirSync("./.github/data", { recursive: true });
   fs.writeFileSync(filePath, JSON.stringify(finalData, null, 2));
 
   console.log(

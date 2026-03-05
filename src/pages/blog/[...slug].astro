@@ -74,10 +74,7 @@ const metadata = {
         <Content />
       </div>
 
-      <RelatedContent
-        currentId={post.id}
-        tags={post.data.tags ?? []}
-      />
+      <RelatedContent currentId={post.id} tags={post.data.tags ?? []} />
     </div>
   </section>
 </BaseLayout>

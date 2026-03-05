@@ -25,7 +25,8 @@ import Analytics from "@vercel/analytics/astro";
 
 import { siteConfig } from "../config/site";
 
-const { title, description, ogImage, canonical, section, metadata } = Astro.props;
+const { title, description, ogImage, canonical, section, metadata } =
+  Astro.props;
 
 const finalTitle = metadata?.title || title;
 const finalDescription = metadata?.description || description;

@@ -36,40 +36,40 @@ const metadata = {
       </nav>
 
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6" id="gallery">
-        {photography.map((entry, i) => (
-          <button
-            type="button"
-            class="gallery-item group relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-border bg-card/60 text-left focus:outline-none focus:ring-2 focus:ring-primary"
-            data-index={i}
-            data-title={entry.data.title}
-            data-description={entry.data.description ?? ""}
-            data-location={entry.data.location ?? ""}
-            data-src={entry.data.image ?? ""}
-          >
-            {entry.data.image ? (
-              <img
-                src={entry.data.image}
-                alt={entry.data.title}
-                class="h-full w-full object-cover transition-transform group-hover:scale-105"
-                loading="lazy"
-              />
-            ) : (
-              <div
-                class="flex h-full w-full items-center justify-center bg-muted/50 text-muted-foreground"
-                aria-hidden="true"
-              >
-                <span class="text-sm font-medium">No image</span>
-              </div>
-            )}
-            <div
-              class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 pt-8"
+        {
+          photography.map((entry, i) => (
+            <button
+              type="button"
+              class="gallery-item group relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-border bg-card/60 text-left focus:outline-none focus:ring-2 focus:ring-primary"
+              data-index={i}
+              data-title={entry.data.title}
+              data-description={entry.data.description ?? ""}
+              data-location={entry.data.location ?? ""}
+              data-src={entry.data.image ?? ""}
             >
-              <span class="text-sm font-semibold text-white">
-                {entry.data.title}
-              </span>
-            </div>
-          </button>
-        ))}
+              {entry.data.image ? (
+                <img
+                  src={entry.data.image}
+                  alt={entry.data.title}
+                  class="h-full w-full object-cover transition-transform group-hover:scale-105"
+                  loading="lazy"
+                />
+              ) : (
+                <div
+                  class="flex h-full w-full items-center justify-center bg-muted/50 text-muted-foreground"
+                  aria-hidden="true"
+                >
+                  <span class="text-sm font-medium">No image</span>
+                </div>
+              )}
+              <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 pt-8">
+                <span class="text-sm font-semibold text-white">
+                  {entry.data.title}
+                </span>
+              </div>
+            </button>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -86,8 +86,17 @@ const metadata = {
         class="lightbox-close absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
         aria-label="Close"
       >
-        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        <svg
+          class="h-6 w-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"></path>
         </svg>
       </button>
       <div class="relative max-h-[85vh] max-w-4xl" id="lightbox-media">
@@ -97,7 +106,10 @@ const metadata = {
           alt=""
           class="max-h-[85vh] w-auto rounded-lg object-contain hidden"
         />
-        <div id="lightbox-placeholder" class="hidden rounded-lg bg-white/5 px-8 py-12 text-white/60">
+        <div
+          id="lightbox-placeholder"
+          class="hidden rounded-lg bg-white/5 px-8 py-12 text-white/60"
+        >
           No image yet
         </div>
       </div>
@@ -117,7 +129,12 @@ const metadata = {
     const locationEl = document.getElementById("lightbox-location");
 
     const placeholder = document.getElementById("lightbox-placeholder");
-    function openLightbox(src: string, title: string, description: string, location: string) {
+    function openLightbox(
+      src: string,
+      title: string,
+      description: string,
+      location: string,
+    ) {
       if (img && placeholder) {
         if (src) {
           img.src = src;
@@ -149,7 +166,9 @@ const metadata = {
       });
     });
 
-    document.querySelector(".lightbox-close")?.addEventListener("click", closeLightbox);
+    document
+      .querySelector(".lightbox-close")
+      ?.addEventListener("click", closeLightbox);
     dialog?.addEventListener("click", (e) => {
       if (e.target === dialog) closeLightbox();
     });

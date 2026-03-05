@@ -4,7 +4,7 @@ Personal website and thinking lab: **AI systems • Manufacturing • Ideas • 
 
 ## What’s on the site
 
-- **Home** — Intro, tagline, and a *Featured* section (one essay, one project, one creative, one quote).
+- **Home** — Intro, tagline, and a _Featured_ section (one essay, one project, one creative, one quote).
 - **Projects** — Case studies and project write-ups (industrial AI, monitoring, etc.).
 - **Writing** — Hub with four sections:
   - **Essays** — Longer-form pieces.
@@ -99,16 +99,16 @@ cp .env.example .env
 
 All content is in **`src/content/`** with schemas in **`src/content.config.ts`**:
 
-| Collection   | Path                | Main fields (besides title, description, tags)     |
-|-------------|---------------------|------------------------------------------------------|
-| blog        | `blog/`             | pubDate, author, image, category                     |
-| projects    | `projects/`         | pubDate, role, status, link, repo, impact            |
-| essays      | `essays/`           | pubDate, minutesRead                                  |
-| notes       | `notes/`            | pubDate, author, kind (idea \| observation \| snippet) |
-| quotes      | `quotes/`           | quote, source                                         |
-| poetry      | `poetry/`           | pubDate, form                                         |
-| photography | `photography/`      | pubDate, image, location, camera                      |
-| design      | `design/`           | pubDate, image, medium                                |
+| Collection  | Path           | Main fields (besides title, description, tags)         |
+| ----------- | -------------- | ------------------------------------------------------ |
+| blog        | `blog/`        | pubDate, author, image, category                       |
+| projects    | `projects/`    | pubDate, role, status, link, repo, impact              |
+| essays      | `essays/`      | pubDate, minutesRead                                   |
+| notes       | `notes/`       | pubDate, author, kind (idea \| observation \| snippet) |
+| quotes      | `quotes/`      | quote, source                                          |
+| poetry      | `poetry/`      | pubDate, form                                          |
+| photography | `photography/` | pubDate, image, location, camera                       |
+| design      | `design/`      | pubDate, image, medium                                 |
 
 Use **tags** in frontmatter so the Thinking Lab can show related essays, projects, notes, and quotes.
 
@@ -116,18 +116,72 @@ Use **tags** in frontmatter so the Thinking Lab can show related essays, project
 
 ## Commands
 
-| Command           | Action                                                                 |
-|-------------------|------------------------------------------------------------------------|
-| `npm run dev`     | Start dev server at `http://localhost:4321`                           |
-| `npm run build`   | Build site to `dist/` and run Pagefind to generate search index       |
-| `npm run preview` | Serve `dist/` locally (search works here)                              |
-| `npm run check`   | Astro diagnostics                                                     |
-| `npm run typecheck` | TypeScript check                                                    |
-| `npm run lint`    | ESLint                                                                |
-| `npm run format`  | Prettier                                                              |
-| `npm run fix`     | Format + lint fix                                                     |
+| Command             | Action                                                          |
+| ------------------- | --------------------------------------------------------------- |
+| `npm run dev`       | Start dev server at `http://localhost:4321`                     |
+| `npm run build`     | Build site to `dist/` and run Pagefind to generate search index |
+| `npm run preview`   | Serve `dist/` locally (search works here)                       |
+| `npm run check`     | Astro diagnostics                                               |
+| `npm run typecheck` | TypeScript check                                                |
+| `npm run lint`      | ESLint                                                          |
+| `npm run format`    | Prettier                                                        |
+| `npm run fix`       | Format + lint fix                                               |
 
 **Note:** Search (Pagefind) only works after `npm run build`; the index is created from `dist/`.
+
+---
+
+## Deploy to Firebase Hosting
+
+The site is set up to deploy to [Firebase Hosting](https://firebase.google.com/docs/hosting). The build output (`dist/`) is used as the hosting public directory.
+
+### One-time setup
+
+1. **Install Firebase CLI** (if needed):
+
+   ```bash
+   npm install -g firebase-tools
+   ```
+
+   Or use `npx firebase-tools` for one-off commands.
+
+2. **Log in to Firebase**:
+
+   ```bash
+   firebase login
+   ```
+
+3. **Create a Firebase project** (if you don’t have one):
+   - Go to [Firebase Console](https://console.firebase.google.com/)
+   - Click “Add project”, name it (e.g. `sivampillai-website`), and follow the steps.
+
+4. **Link this app to your Firebase project**:
+
+   ```bash
+   firebase init hosting
+   ```
+
+   - Choose “Use an existing project” and select your project (or create one first).
+   - When asked for the public directory, enter **`dist`** (it’s already in `firebase.json`; confirm or leave as is).
+   - “Single-page app?” → **No** (Astro outputs multiple HTML pages).
+   - If prompted to overwrite `firebase.json`, choose **N** to keep the existing config.
+
+   This creates or updates `.firebaserc` with your project ID. You can commit `.firebaserc` so others (or CI) deploy to the same project.
+
+### Deploy
+
+From the project root:
+
+```bash
+npm run deploy
+```
+
+This runs `npm run build` (Astro + Pagefind) and then `firebase deploy`. Your site will be available at:
+
+- `https://<your-project-id>.web.app`
+- `https://<your-project-id>.firebaseapp.com`
+
+To use a custom domain (e.g. `sivampillai.com`), add it in Firebase Console → Hosting → “Add custom domain” and follow the DNS steps.
 
 ---
 

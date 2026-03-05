@@ -28,42 +28,44 @@ const metadata = {
       />
 
       <div class="space-y-6">
-        {projects.map((project) => {
-          const slug = project.slug ?? project.id;
-          return (
-            <article class="reveal rounded-2xl border border-border bg-card/60 p-6 hover:border-primary/50 transition-colors">
-              <h2 class="text-lg font-semibold text-foreground">
-                {project.data.title}
-              </h2>
-              {project.data.description && (
-                <p class="mt-1 text-sm text-muted-foreground">
-                  {project.data.description}
-                </p>
-              )}
-              <div class="mt-2 flex flex-wrap gap-2 text-xs text-muted-foreground">
-                {project.data.status && (
-                  <span class="rounded-full bg-foreground/5 px-3 py-1">
-                    {project.data.status}
-                  </span>
+        {
+          projects.map((project) => {
+            const slug =
+              (project as { id: string; slug?: string }).slug ?? project.id;
+            return (
+              <article class="reveal rounded-2xl border border-border bg-card/60 p-6 hover:border-primary/50 transition-colors">
+                <h2 class="text-lg font-semibold text-foreground">
+                  {project.data.title}
+                </h2>
+                {project.data.description && (
+                  <p class="mt-1 text-sm text-muted-foreground">
+                    {project.data.description}
+                  </p>
                 )}
-                {Array.isArray(project.data.tags) &&
-                  project.data.tags.map((tag) => (
+                <div class="mt-2 flex flex-wrap gap-2 text-xs text-muted-foreground">
+                  {project.data.status && (
                     <span class="rounded-full bg-foreground/5 px-3 py-1">
-                      {tag}
+                      {project.data.status}
                     </span>
-                  ))}
-              </div>
-              <a
-                href={`/projects/${slug}`}
-                class="mt-4 inline-flex text-xs font-semibold text-primary hover:underline"
-              >
-                Read more
-              </a>
-            </article>
-          );
-        })}
+                  )}
+                  {Array.isArray(project.data.tags) &&
+                    project.data.tags.map((tag) => (
+                      <span class="rounded-full bg-foreground/5 px-3 py-1">
+                        {tag}
+                      </span>
+                    ))}
+                </div>
+                <a
+                  href={`/projects/${slug}`}
+                  class="mt-4 inline-flex text-xs font-semibold text-primary hover:underline"
+                >
+                  Read more
+                </a>
+              </article>
+            );
+          })
+        }
       </div>
     </div>
   </section>
 </BaseLayout>
-
