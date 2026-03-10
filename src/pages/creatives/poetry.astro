@@ -39,16 +39,21 @@ const metadata = {
         {
           poetry.map((entry) => (
             <li>
-              <article class="rounded-xl border border-border bg-card/60 px-4 py-3">
-                <h2 class="text-base font-semibold text-foreground">
-                  {entry.data.title}
-                </h2>
-                {entry.data.description && (
-                  <p class="mt-0.5 text-sm text-muted-foreground line-clamp-1">
-                    {entry.data.description}
-                  </p>
-                )}
-              </article>
+              <a
+                href={`/creatives/poetry/${entry.id}`}
+                class="block rounded-xl border border-border bg-card/60 px-4 py-3 transition-colors hover:border-primary/50 hover:bg-card"
+              >
+                <article>
+                  <h2 class="text-base font-semibold text-foreground">
+                    {entry.data.title}
+                  </h2>
+                  {entry.data.description && (
+                    <p class="mt-0.5 text-sm text-muted-foreground line-clamp-1">
+                      {entry.data.description}
+                    </p>
+                  )}
+                </article>
+              </a>
             </li>
           ))
         }

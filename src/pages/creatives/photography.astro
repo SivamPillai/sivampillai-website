@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import Headline from "../../components/ui/Headline.astro";
+import { getStorageImageUrl } from "../../utils/storage";
 
 const photography = (await getCollection("photography")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -37,7 +38,9 @@ const metadata = {
 
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6" id="gallery">
         {
-          photography.map((entry, i) => (
+          photography.map((entry, i) => {
+            const imageUrl = getStorageImageUrl(entry.data.image);
+            return (
             <button
               type="button"
               class="gallery-item group relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-border bg-card/60 text-left focus:outline-none focus:ring-2 focus:ring-primary"
@@ -45,11 +48,11 @@ const metadata = {
               data-title={entry.data.title}
               data-description={entry.data.description ?? ""}
               data-location={entry.data.location ?? ""}
-              data-src={entry.data.image ?? ""}
+              data-src={imageUrl ?? ""}
             >
-              {entry.data.image ? (
+              {imageUrl ? (
                 <img
-                  src={entry.data.image}
+                  src={imageUrl}
                   alt={entry.data.title}
                   class="h-full w-full object-cover transition-transform group-hover:scale-105"
                   loading="lazy"
@@ -68,7 +71,8 @@ const metadata = {
                 </span>
               </div>
             </button>
-          ))
+            );
+          })
         }
       </div>
     </div>

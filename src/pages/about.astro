@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { getImage } from "astro:assets";
 import Content2 from "../components/widgets/Content2.astro";
 import Values from "../components/widgets/Values.astro";
-import aboutImage from "../assets/images/about-office.webp";
+import aboutImage from "../assets/images/about-me.webp";
 
 const metadata = {
   title: "About Sivam",
@@ -80,8 +80,8 @@ const optimizedImage = await getImage({
   <Values
     items={values}
     columns={3}
-    tagline="Our Values"
-    title="What Defines Us"
-    subtitle="Principles that guide our daily work"
+    tagline="My Values"
+    title="What Defines Me"
+    subtitle="Principles that guide my daily work"
   />
 </BaseLayout>

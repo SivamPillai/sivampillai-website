@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import Headline from "../../components/ui/Headline.astro";
+import { getStorageImageUrl } from "../../utils/storage";
 
 const design = (await getCollection("design")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -37,12 +38,14 @@ const metadata = {
 
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {
-          design.map((entry) => (
+          design.map((entry) => {
+            const imageUrl = getStorageImageUrl(entry.data.image);
+            return (
             <article class="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
               <div class="relative aspect-video w-full overflow-hidden bg-muted/30">
-                {entry.data.image ? (
+                {imageUrl ? (
                   <img
-                    src={entry.data.image}
+                    src={imageUrl}
                     alt={entry.data.title}
                     class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
@@ -73,7 +76,8 @@ const metadata = {
                 </p>
               </div>
             </article>
-          ))
+            );
+          })
         }
       </div>
     </div>

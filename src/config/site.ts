@@ -14,6 +14,7 @@ export const siteConfig = {
     x: "https://x.com/SivamPillai",
     github: "https://github.com/sivampillai",
     linkedin: "https://www.linkedin.com/in/sivampillai",
+    instagram: "https://www.instagram.com/sivampillai",
     medium: "https://medium.com/@drspill",
   },
   navLinks: [

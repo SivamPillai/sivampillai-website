@@ -1,0 +1,24 @@
+rules_version = '2';
+
+// Allow public read access to site images (photography, blog, design).
+// Upload and write remain restricted to authenticated users / Admin SDK.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /photos/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /public/photos/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /public/blogs/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /public/essays/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

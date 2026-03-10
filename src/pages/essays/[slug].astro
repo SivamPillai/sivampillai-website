@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import Headline from "../../components/ui/Headline.astro";
 import RelatedContent from "../../components/thinking/RelatedContent.astro";
+import { getStorageImageUrl } from "../../utils/storage";
 
 type EssayEntry = CollectionEntry<"essays">;
 
@@ -19,10 +20,13 @@ export async function getStaticPaths() {
 
 const { essay } = Astro.props as { essay: EssayEntry };
 const { Content } = await render(essay);
+const { title, description, pubDate, tags, image } = essay.data;
+const imageUrl = getStorageImageUrl(image);
 
 const metadata = {
-  title: essay.data.title,
-  description: essay.data.description,
+  title,
+  description: description ?? title,
+  ogImage: imageUrl,
 };
 ---
 
@@ -31,8 +35,8 @@ const metadata = {
     <div class="mx-auto max-w-3xl">
       <Headline
         tagline="Essay"
-        title={essay.data.title}
-        subtitle={essay.data.description}
+        title={title}
+        subtitle={description ?? undefined}
         classes={{
           container: "mb-6 text-left",
           title:
@@ -43,27 +47,33 @@ const metadata = {
 
       <div class="mb-4 flex flex-wrap gap-2 text-xs text-muted-foreground">
         <span>
-          {
-            essay.data.pubDate.toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })
-          }
+          {pubDate.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}
         </span>
-        {
-          Array.isArray(essay.data.tags) &&
-            essay.data.tags.map((tag) => (
-              <span class="rounded-full bg-foreground/5 px-3 py-1">{tag}</span>
-            ))
-        }
+        {Array.isArray(tags) &&
+          tags.map((tag) => (
+            <span class="rounded-full bg-foreground/5 px-3 py-1">{tag}</span>
+          ))}
       </div>
+
+      {imageUrl && (
+        <div class="reveal relative mb-8 h-72 w-full overflow-hidden rounded-xl border border-border shadow-md sm:h-96">
+          <img
+            src={imageUrl}
+            alt={title}
+            class="h-full w-full object-cover"
+          />
+        </div>
+      )}
 
       <div class="prose prose-invert max-w-none text-sm leading-relaxed">
         <Content />
       </div>
 
-      <RelatedContent currentId={essay.id} tags={essay.data.tags} />
+      <RelatedContent currentId={essay.id} tags={tags ?? []} />
     </div>
   </article>
 </BaseLayout>
