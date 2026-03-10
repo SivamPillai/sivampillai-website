@@ -112,6 +112,36 @@ All content is in **`src/content/`** with schemas in **`src/content.config.ts`**
 
 Use **tags** in frontmatter so the Thinking Lab can show related essays, projects, notes, and quotes.
 
+### Photography images (Firebase Storage)
+
+Photography (and optionally blog/design) images are stored in **Firebase Storage** instead of the repo to keep the repository small. The `image` field in photography frontmatter must be a **full URL** (e.g. from Firebase Storage).
+
+1. **Enable Storage** in [Firebase Console](https://console.firebase.google.com/) → your project → Build → Storage → Get started. Use the same project as Hosting.
+
+2. **Deploy storage rules** so the `photos/` path is publicly readable:
+
+   ```bash
+   firebase deploy --only storage
+   ```
+
+   Rules are in `storage.rules`: public read for `photos/` and `public/photos/`.
+
+3. **Upload photos** to the bucket under `photos/` (or `public/photos/`) via the Firebase Console (Storage → Upload file) or a script using the Firebase Admin SDK. Prefer resized/WebP assets to save space and bandwidth.
+
+4. **Get the public URL** for each file:
+   - In the Console: open the file in Storage → click the URL or “Copy link”.
+   - Or use the format:  
+     `https://firebasestorage.googleapis.com/v0/b/<project-id>.appspot.com/o/photos%2F<filename>?alt=media`  
+     (replace `<project-id>` and `<filename>`; `%2F` is the encoded `/` for the path).
+
+5. **Set the URL in frontmatter** for the photography entry:
+
+   ```yaml
+   image: "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT.appspot.com/o/photos%2Fsteam-and-light.webp?alt=media"
+   ```
+
+   The photography collection schema accepts only valid URLs for `image`; relative paths (e.g. `/blog/photo.webp`) are not allowed for this collection.
+
 ---
 
 ## Commands
@@ -176,7 +206,7 @@ From the project root:
 npm run deploy
 ```
 
-This runs `npm run build` (Astro + Pagefind) and then `firebase deploy`. Your site will be available at:
+This runs `npm run build` (Astro + Pagefind) and then `firebase deploy` (Hosting and Storage rules). To deploy only Storage rules after editing `storage.rules`, run `firebase deploy --only storage`. Your site will be available at:
 
 - `https://<your-project-id>.web.app`
 - `https://<your-project-id>.firebaseapp.com`

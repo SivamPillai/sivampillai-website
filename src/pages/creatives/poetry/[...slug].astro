@@ -1,0 +1,63 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const poetry = await getCollection("poetry");
+  return poetry.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, description, pubDate, author, form } = entry.data;
+
+const formattedDate = pubDate.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+const metadata = {
+  title,
+  description: description ?? title,
+};
+---
+
+<BaseLayout {metadata} section="Poetry">
+  <section class="px-4 py-8 sm:px-6 lg:px-8 md:py-12">
+    <div class="mx-auto max-w-2xl">
+      <nav class="mb-6 text-sm">
+        <a href="/creatives/poetry" class="text-muted-foreground hover:text-primary"
+          >← Poetry</a
+        >
+      </nav>
+
+      <article class="rounded-xl border border-border bg-card/60 px-6 py-8 sm:px-8">
+        <header class="mb-6">
+          <p class="text-sm text-muted-foreground">
+            {formattedDate}
+            {author && ` · ${author}`}
+            {form && ` · ${form}`}
+          </p>
+          <h1 class="font-heading mt-1 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            {title}
+          </h1>
+          {description && (
+            <p class="mt-2 text-sm text-muted-foreground">
+              {description}
+            </p>
+          )}
+        </header>
+
+        <div
+          class="prose prose-lg dark:prose-invert max-w-none prose-p:text-foreground prose-p:leading-relaxed prose-p:my-2 first:prose-p:mt-0 last:prose-p:mb-0"
+        >
+          <Content />
+        </div>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

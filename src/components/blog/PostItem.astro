@@ -1,6 +1,7 @@
 ---
 import Tags from "../ui/Tags.astro";
 import { type CollectionEntry, render } from "astro:content";
+import { getStorageImageUrl } from "../../utils/storage";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -8,6 +9,7 @@ export interface Props {
 
 const { post } = Astro.props;
 const { remarkPluginFrontmatter } = await render(post);
+const imageUrl = getStorageImageUrl(post.data.image);
 
 const readingTime = remarkPluginFrontmatter?.minutesRead
   ? `${Math.ceil(remarkPluginFrontmatter.minutesRead)} min read`
@@ -19,9 +21,9 @@ const readingTime = remarkPluginFrontmatter?.minutesRead
 >
   <div class="relative h-48 w-full overflow-hidden">
     {
-      post.data.image && (
+      imageUrl && (
         <img
-          src={post.data.image}
+          src={imageUrl}
           alt={post.data.title}
           class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />

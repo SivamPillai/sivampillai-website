@@ -38,6 +38,9 @@ const essays = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/essays" }),
   schema: z.object({
     ...datedFields,
+    author: z.string().optional(),
+    category: z.string().optional(),
+    image: z.string().optional(),
     minutesRead: z.number().optional(),
   }),
 });
@@ -57,6 +60,10 @@ const quotes = defineCollection({
     ...baseFields,
     quote: z.string(),
     source: z.string().optional(),
+    /** URL to the original source for citation (e.g. article, video, tweet). */
+    sourceUrl: z.string().url().optional(),
+    /** Display id for the quote (e.g. Q0001). If omitted, derived from filename (q001-* → Q0001). */
+    quoteId: z.string().optional(),
   }),
 });
 
@@ -64,6 +71,7 @@ const poetry = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/poetry" }),
   schema: z.object({
     ...datedFields,
+    author: z.string().optional(),
     form: z.string().optional(),
   }),
 });

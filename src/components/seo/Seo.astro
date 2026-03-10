@@ -18,12 +18,15 @@ const {
   ignoreTitleTemplate = false,
 } = Astro.props;
 
+/** Default site-wide OG image for social sharing and SEO when a page doesn't set one */
+const defaultOgImagePath = "/og-image.png";
+
 const ogImageSrc =
   ogImage !== undefined
     ? typeof ogImage === "string"
       ? ogImage
       : (ogImage as ImageMetadata).src
-    : undefined;
+    : defaultOgImagePath;
 
 const fullTitle =
   title && !ignoreTitleTemplate
