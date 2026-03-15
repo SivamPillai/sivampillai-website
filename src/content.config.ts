@@ -26,11 +26,14 @@ const projects = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/projects" }),
   schema: z.object({
     ...datedFields,
+    subtitle: z.string().optional(),
+    author: z.string().optional(),
     role: z.string().optional(),
     status: z.enum(["idea", "in-progress", "shipped"]).default("shipped"),
     link: z.string().url().optional(),
     repo: z.string().url().optional(),
     impact: z.string().optional(),
+    image: z.string().optional(),
   }),
 });
 
@@ -38,6 +41,7 @@ const essays = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/essays" }),
   schema: z.object({
     ...datedFields,
+    subtitle: z.string().optional(),
     author: z.string().optional(),
     category: z.string().optional(),
     image: z.string().optional(),

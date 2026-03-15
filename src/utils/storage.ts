@@ -2,7 +2,7 @@
  * Resolves an image reference to a full URL for display and SEO.
  * - If the value is already a full URL (http/https), returns it unchanged.
  * - Otherwise treats it as a path in Firebase Storage and builds the URL using
- *   PUBLIC_STORAGE_BASE_URL from env (e.g. public/blogs/onstage.webp → full URL).
+ *   PUBLIC_STORAGE_BASE_URL from env (e.g. public/blogs/onstage.webp, public/projects/x001-dataved.webp → full URL).
  */
 export function getStorageImageUrl(path: string | undefined): string | undefined {
   if (!path || typeof path !== "string") return undefined;

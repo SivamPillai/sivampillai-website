@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection, render, type CollectionEntry } from "astro:content";
-import Headline from "../../components/ui/Headline.astro";
 import RelatedContent from "../../components/thinking/RelatedContent.astro";
 import { getStorageImageUrl } from "../../utils/storage";
 
@@ -19,9 +18,20 @@ export async function getStaticPaths() {
 }
 
 const { essay } = Astro.props as { essay: EssayEntry };
-const { Content } = await render(essay);
-const { title, description, pubDate, tags, image } = essay.data;
+const { Content, remarkPluginFrontmatter } = await render(essay);
+const { title, description, subtitle, pubDate, tags, image, author } =
+  essay.data;
 const imageUrl = getStorageImageUrl(image);
+
+const formattedDate = pubDate.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+const readingTime = remarkPluginFrontmatter?.minutesRead
+  ? `${Math.ceil(remarkPluginFrontmatter.minutesRead)} minutes read`
+  : "";
 
 const metadata = {
   title,
@@ -31,49 +41,44 @@ const metadata = {
 ---
 
 <BaseLayout {metadata} section="Essays">
-  <article class="px-4 py-8 sm:px-6 lg:px-8 md:py-12">
-    <div class="mx-auto max-w-3xl">
-      <Headline
-        tagline="Essay"
-        title={title}
-        subtitle={description ?? undefined}
-        classes={{
-          container: "mb-6 text-left",
-          title:
-            "font-heading mb-3 text-3xl font-bold tracking-tight text-foreground md:text-4xl",
-          subtitle: "max-w-2xl text-base text-muted-foreground",
-        }}
-      />
+  <section class="relative px-4 py-8 sm:px-6 lg:px-8 md:py-12">
+    <div class="relative mx-auto max-w-3xl">
+      <div class="reveal mb-10 text-left">
+        <p class="text-sm font-semibold tracking-wide text-primary uppercase">
+          {formattedDate}
+          {author && ` • ${author}`}
+          {readingTime && ` • ${readingTime}`}
+        </p>
+        <h1
+          class="font-heading mt-2 text-3xl font-bold leading-tight tracking-tighter text-foreground sm:text-4xl md:text-5xl"
+        >
+          {title}
+        </h1>
+        {subtitle && (
+          <p class="mt-2 text-lg text-muted-foreground">{subtitle}</p>
+        )}
+      </div>
+
+      {imageUrl && (
+        <div class="reveal relative mb-8 h-96 w-full overflow-hidden rounded-xl shadow-lg">
+          <img src={imageUrl} alt={title} class="h-full w-full object-cover" />
+        </div>
+      )}
 
       <div class="mb-4 flex flex-wrap gap-2 text-xs text-muted-foreground">
-        <span>
-          {pubDate.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          })}
-        </span>
         {Array.isArray(tags) &&
           tags.map((tag) => (
             <span class="rounded-full bg-foreground/5 px-3 py-1">{tag}</span>
           ))}
       </div>
 
-      {imageUrl && (
-        <div class="reveal relative mb-8 h-72 w-full overflow-hidden rounded-xl border border-border shadow-md sm:h-96">
-          <img
-            src={imageUrl}
-            alt={title}
-            class="h-full w-full object-cover"
-          />
-        </div>
-      )}
-
-      <div class="prose prose-invert max-w-none text-sm leading-relaxed">
+      <div
+        class="reveal prose prose-lg dark:prose-invert mx-auto prose-headings:text-foreground prose-a:text-primary hover:prose-a:underline prose-p:text-muted-foreground prose-strong:text-foreground prose-li:text-muted-foreground prose-code:text-primary"
+      >
         <Content />
       </div>
 
       <RelatedContent currentId={essay.id} tags={tags ?? []} />
     </div>
-  </article>
+  </section>
 </BaseLayout>
