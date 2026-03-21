@@ -54,7 +54,7 @@ const notes = defineCollection({
   schema: z.object({
     ...datedFields,
     author: z.string().optional(),
-    kind: z.enum(["idea", "observation", "snippet"]).default("idea"),
+    kind: z.enum(["idea", "observation", "snippet", "quote"]).default("idea"),
   }),
 });
 
@@ -63,7 +63,7 @@ const curatedCollections = defineCollection({
   schema: z.object({
     ...datedFields,
     author: z.string().optional(),
-    kind: z.enum(["idea", "observation", "snippet"]).default("idea"),
+    kind: z.enum(["idea", "observation", "snippet", "quote"]).default("idea"),
   }),
 });
 
