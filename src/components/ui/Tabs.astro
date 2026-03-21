@@ -1,0 +1,147 @@
+---
+interface TabItem {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  tabs: TabItem[];
+  defaultId?: string;
+  /** Unique id suffix for this group (tab/panel ids and panel visibility CSS) */
+  idPrefix?: string;
+}
+
+const { tabs, defaultId, idPrefix: idPrefixProp } = Astro.props as Props;
+
+const idPrefix =
+  idPrefixProp ??
+  `tg${Math.random().toString(36).slice(2, 10)}`;
+
+const initialId =
+  defaultId && tabs.some((t) => t.id === defaultId)
+    ? defaultId
+    : (tabs[0]?.id ?? "");
+
+const rootElId = `tabs-root-${idPrefix}`;
+
+const panelVisibilityCss =
+  `#${rootElId} [data-tab-panel] { display: none !important; }\n` +
+  tabs
+    .map(
+      (t) =>
+        `#${rootElId}[data-active-tab="${t.id}"] [data-tab-panel="${t.id}"] { display: block !important; }`,
+    )
+    .join("\n");
+---
+
+<style is:global set:html={panelVisibilityCss}></style>
+
+<div
+  id={rootElId}
+  class="space-y-6"
+  data-tabs-root
+  data-tab-prefix={idPrefix}
+  data-default-tab={initialId}
+  data-active-tab={initialId}
+>
+  <div
+    role="tablist"
+    aria-label="Sections"
+    class="-mx-1 flex gap-1 overflow-x-auto border-b border-border px-1 pb-px"
+  >
+    {
+      tabs.map((t) => {
+        const tid = `tab-${idPrefix}-${t.id}`;
+        const pid = `panel-${idPrefix}-${t.id}`;
+        const selected = t.id === initialId;
+        return (
+          <button
+            type="button"
+            role="tab"
+            id={tid}
+            aria-controls={pid}
+            aria-selected={selected}
+            tabindex={selected ? 0 : -1}
+            data-tab-button={t.id}
+            class:list={[
+              "shrink-0 rounded-t-md border border-b-0 px-3 py-2 text-sm font-medium transition-colors",
+              selected
+                ? "border-border bg-card text-foreground border-b-card relative z-[1] -mb-px"
+                : "border-transparent text-muted-foreground hover:text-foreground",
+            ]}
+          >
+            {t.label}
+          </button>
+        );
+      })
+    }
+  </div>
+
+  <div class="tab-panels">
+    <slot />
+  </div>
+</div>
+
+<script>
+  function initTabsRoot(root: HTMLElement) {
+    const defaultTab = root.dataset.defaultTab ?? "";
+    const buttons = [
+      ...root.querySelectorAll<HTMLButtonElement>("[data-tab-button]"),
+    ];
+
+    function select(id: string) {
+      root.dataset.activeTab = id;
+      for (const btn of buttons) {
+        const isSel = btn.dataset.tabButton === id;
+        btn.setAttribute("aria-selected", String(isSel));
+        btn.tabIndex = isSel ? 0 : -1;
+        btn.classList.toggle("border-border", isSel);
+        btn.classList.toggle("bg-card", isSel);
+        btn.classList.toggle("text-foreground", isSel);
+        btn.classList.toggle("border-b-card", isSel);
+        btn.classList.toggle("relative", isSel);
+        btn.classList.toggle("z-[1]", isSel);
+        btn.classList.toggle("-mb-px", isSel);
+        btn.classList.toggle("border-transparent", !isSel);
+        btn.classList.toggle("text-muted-foreground", !isSel);
+      }
+    }
+
+    const firstId = buttons[0]?.dataset.tabButton ?? "";
+    const start =
+      defaultTab && buttons.some((b) => b.dataset.tabButton === defaultTab)
+        ? defaultTab
+        : firstId;
+    select(start);
+
+    for (const btn of buttons) {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.tabButton;
+        if (id) select(id);
+      });
+    }
+
+    const tablist = root.querySelector<HTMLElement>('[role="tablist"]');
+    tablist?.addEventListener("keydown", (e) => {
+      const ke = e as KeyboardEvent;
+      if (ke.key !== "ArrowLeft" && ke.key !== "ArrowRight") return;
+      const ids = buttons
+        .map((b) => b.dataset.tabButton)
+        .filter(Boolean) as string[];
+      const active = document.activeElement as HTMLButtonElement | null;
+      if (!active || !buttons.includes(active)) return;
+      const i = ids.indexOf(active.dataset.tabButton ?? "");
+      if (i < 0) return;
+      ke.preventDefault();
+      const next =
+        ke.key === "ArrowRight"
+          ? ids[(i + 1) % ids.length]
+          : ids[(i - 1 + ids.length) % ids.length];
+      const nextBtn = buttons.find((b) => b.dataset.tabButton === next);
+      nextBtn?.focus();
+      select(next);
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-tabs-root]").forEach(initTabsRoot);
+</script>

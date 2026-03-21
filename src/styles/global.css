@@ -31,6 +31,24 @@
   --card: #0a0a0a;
 }
 
+/* Pagefind UI — defaults assume a light page; map tokens to site theme in dark mode */
+:root[data-theme="dark"] .pagefind-ui {
+  --pagefind-ui-primary: var(--primary);
+  --pagefind-ui-text: var(--foreground);
+  --pagefind-ui-background: var(--card);
+  --pagefind-ui-border: var(--border);
+  --pagefind-ui-tag: var(--muted);
+}
+
+:root[data-theme="dark"] .pagefind-ui [class*="pagefind-ui__result-excerpt"] {
+  color: var(--muted-foreground);
+}
+
+:root[data-theme="dark"] .pagefind-ui mark {
+  color: var(--foreground);
+  background-color: color-mix(in srgb, #facc15 45%, transparent);
+}
+
 /* Base styles using variables */
 @layer base {
   body {

@@ -5,7 +5,7 @@ import Headline from "../components/ui/Headline.astro";
 const metadata = {
   title: "Search",
   description:
-    "Search across essays, blog, projects, notes, quotes, and creatives.",
+    "Search across essays, blog, projects, notes, collections, quotes, and creatives.",
 };
 ---
 
@@ -15,7 +15,7 @@ const metadata = {
       <Headline
         tagline="Search"
         title="Search the site"
-        subtitle="Find essays, blog posts, projects, notes, quotes, and creatives. Use the filter below to limit by section."
+        subtitle="Find essays, blog posts, projects, notes, collections, quotes, and creatives. Use the filter below to limit by section."
         classes={{
           container: "mb-6 text-left",
           title:
@@ -40,6 +40,7 @@ const metadata = {
           <option value="Essays">Essays</option>
           <option value="Projects">Projects</option>
           <option value="Notes">Notes</option>
+          <option value="Collections">Collections</option>
           <option value="Quotes">Quotes</option>
           <option value="Writing">Writing</option>
           <option value="Creatives">Creatives</option>

@@ -58,6 +58,15 @@ const notes = defineCollection({
   }),
 });
 
+const curatedCollections = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/collections" }),
+  schema: z.object({
+    ...datedFields,
+    author: z.string().optional(),
+    kind: z.enum(["idea", "observation", "snippet"]).default("idea"),
+  }),
+});
+
 const quotes = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/quotes" }),
   schema: z.object({
@@ -87,6 +96,7 @@ const photography = defineCollection({
   }),
   schema: z.object({
     ...datedFields,
+    author: z.string().optional(),
     image: z.string().optional(),
     location: z.string().optional(),
     camera: z.string().optional(),
@@ -107,6 +117,7 @@ export const collections = {
   projects,
   essays,
   notes,
+  collections: curatedCollections,
   quotes,
   poetry,
   photography,

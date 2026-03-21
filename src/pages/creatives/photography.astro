@@ -40,6 +40,9 @@ const metadata = {
         {
           photography.map((entry, i) => {
             const imageUrl = getStorageImageUrl(entry.data.image);
+            const slug =
+              (entry as { id: string; slug?: string }).slug ?? entry.id;
+            const permalink = `/creatives/photography/${slug}`;
             return (
             <button
               type="button"
@@ -49,6 +52,7 @@ const metadata = {
               data-description={entry.data.description ?? ""}
               data-location={entry.data.location ?? ""}
               data-src={imageUrl ?? ""}
+              data-permalink={permalink}
             >
               {imageUrl ? (
                 <img
@@ -121,6 +125,13 @@ const metadata = {
         <h2 id="lightbox-title" class="text-lg font-semibold"></h2>
         <p id="lightbox-description" class="mt-1 text-sm text-white/80"></p>
         <p id="lightbox-location" class="mt-0.5 text-xs text-white/60"></p>
+        <a
+          id="lightbox-permalink"
+          href="#"
+          class="mt-4 hidden text-sm font-semibold text-white/90 underline decoration-white/40 underline-offset-2 hover:text-white hover:decoration-white"
+        >
+          Open full page
+        </a>
       </div>
     </div>
   </dialog>
@@ -133,11 +144,15 @@ const metadata = {
     const locationEl = document.getElementById("lightbox-location");
 
     const placeholder = document.getElementById("lightbox-placeholder");
+    const permalinkEl = document.getElementById(
+      "lightbox-permalink",
+    ) as HTMLAnchorElement | null;
     function openLightbox(
       src: string,
       title: string,
       description: string,
       location: string,
+      permalink: string,
     ) {
       if (img && placeholder) {
         if (src) {
@@ -153,6 +168,14 @@ const metadata = {
       if (titleEl) titleEl.textContent = title;
       if (descEl) descEl.textContent = description;
       if (locationEl) locationEl.textContent = location;
+      if (permalinkEl) {
+        if (permalink) {
+          permalinkEl.href = permalink;
+          permalinkEl.classList.remove("hidden");
+        } else {
+          permalinkEl.classList.add("hidden");
+        }
+      }
       dialog?.showModal();
     }
 
@@ -166,7 +189,8 @@ const metadata = {
         const title = (el as HTMLElement).dataset.title ?? "";
         const description = (el as HTMLElement).dataset.description ?? "";
         const location = (el as HTMLElement).dataset.location ?? "";
-        openLightbox(src, title, description, location);
+        const permalink = (el as HTMLElement).dataset.permalink ?? "";
+        openLightbox(src, title, description, location, permalink);
       });
     });
 

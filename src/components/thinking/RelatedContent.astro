@@ -13,6 +13,7 @@ const allCollections = [
   "projects",
   "essays",
   "notes",
+  "collections",
   "quotes",
   "blog",
 ] as const;
@@ -22,6 +23,7 @@ type AnyEntry =
   | CollectionEntry<"projects">
   | CollectionEntry<"essays">
   | CollectionEntry<"notes">
+  | CollectionEntry<"collections">
   | CollectionEntry<"quotes">
   | CollectionEntry<"blog">;
 
@@ -59,7 +61,7 @@ const hasAny =
     <section class="mt-16 border-t border-border pt-10">
       <Headline
         title="Related from the thinking lab"
-        subtitle="Other things connected by tags — essays, projects, quotes, and notes."
+        subtitle="Other things connected by tags — essays, projects, quotes, notes, and collections."
         classes={{
           container: "mb-8",
           title:
@@ -78,9 +80,11 @@ const hasAny =
                   ? "Related Essays"
                   : key === "notes"
                     ? "Related Notes"
-                    : key === "quotes"
-                      ? "Related Quotes"
-                      : "Related Blog"}
+                    : key === "collections"
+                      ? "Related Collections"
+                      : key === "quotes"
+                        ? "Related Quotes"
+                        : "Related Blog"}
             </h3>
             <ul class="space-y-2 text-sm">
               {entries.map((entry) => {
@@ -95,9 +99,11 @@ const hasAny =
                         ? "/essays"
                         : key === "notes"
                           ? "/notes"
-                          : key === "quotes"
-                            ? "/quotes"
-                            : `/${key}`;
+                          : key === "collections"
+                            ? "/collections"
+                            : key === "quotes"
+                              ? "/quotes"
+                              : `/${key}`;
                 const href = slug ? `${base}/${slug}` : base;
                 return (
                   <li>

@@ -1,12 +1,24 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Headline from "../components/ui/Headline.astro";
+import Tabs from "../components/ui/Tabs.astro";
 
 const metadata = {
   title: "Resources",
   description:
     "Books, tools, and links I keep recommending around AI systems, manufacturing, and thinking clearly.",
 };
+
+const resourceTabs = [
+  { id: "books", label: "Books" },
+  { id: "tools", label: "Tools" },
+  { id: "links", label: "Links" },
+  { id: "podcasts", label: "Podcasts" },
+  { id: "repos", label: "Repos" },
+  { id: "papers", label: "Papers" },
+] as const;
+
+const p = (id: (typeof resourceTabs)[number]["id"]) => `panel-resources-${id}`;
 ---
 
 <BaseLayout {metadata}>
@@ -24,10 +36,9 @@ const metadata = {
         }}
       />
 
-      <div class="grid gap-8 md:grid-cols-2">
-        <div>
-          <h2 class="mb-2 text-base font-semibold">Books</h2>
-          <ul class="space-y-2 text-sm text-muted-foreground">
+      <Tabs tabs={[...resourceTabs]} idPrefix="resources">
+        <div id={p("books")} data-tab-panel="books" class="text-sm text-muted-foreground">
+          <ul class="space-y-2">
             <li>
               <span class="font-medium text-foreground">
                 (Placeholder) Systems thinking &amp; feedback
@@ -43,28 +54,55 @@ const metadata = {
           </ul>
         </div>
 
-        <div>
-          <h2 class="mb-2 text-base font-semibold">Tools</h2>
-          <ul class="space-y-2 text-sm text-muted-foreground">
+        <div id={p("tools")} data-tab-panel="tools" class="text-sm text-muted-foreground">
+          <ul class="space-y-2">
             <li>
-              Simple notebooks, good plotting tools, and a clear data log are
-              still the most underrated “ML tools” I know.
+              Simple notebooks, good plotting tools, and a clear data log are still the
+              most underrated “ML tools” I know.
             </li>
             <li>
-              I’ll add specific libraries and platforms here once I’ve written
-              about how I use them in real projects.
+              I’ll add specific libraries and platforms here once I’ve written about how I
+              use them in real projects.
             </li>
           </ul>
         </div>
-      </div>
 
-      <div>
-        <h2 class="mb-2 text-base font-semibold">Links</h2>
-        <p class="text-sm text-muted-foreground">
-          I’ll eventually collect talks, papers, and essays here — with a short
-          note on why each link matters, not just a long list.
-        </p>
-      </div>
+        <div id={p("links")} data-tab-panel="links" class="text-sm text-muted-foreground">
+          <p>
+            I’ll eventually collect talks, papers, and essays here — with a short note on
+            why each link matters, not just a long list.
+          </p>
+        </div>
+
+        <div
+          id={p("podcasts")}
+          data-tab-panel="podcasts"
+          class="text-sm text-muted-foreground"
+        >
+          <p>
+            Podcasts I replay or send to teammates when a topic comes up — long-form
+            interviews, industry shows, and the occasional story-driven series. I’ll add
+            concrete titles and episodes as I keep a running list.
+          </p>
+        </div>
+
+        <div id={p("repos")} data-tab-panel="repos" class="text-sm text-muted-foreground">
+          <p>
+            Open-source repos I’ve learned from or contributed to — reference
+            implementations, small utilities, and bigger systems worth reading even if you
+            don’t clone them. Nothing listed yet; this tab is a placeholder until I curate
+            it properly.
+          </p>
+        </div>
+
+        <div id={p("papers")} data-tab-panel="papers" class="text-sm text-muted-foreground">
+          <p>
+            Papers and technical reports I return to for foundations (time series,
+            physics-informed models, reliability). I’ll add each with a one-line “why it
+            stuck” note instead of dumping arXiv links without context.
+          </p>
+        </div>
+      </Tabs>
     </div>
   </section>
 </BaseLayout>

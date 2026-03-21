@@ -1,12 +1,22 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Headline from "../components/ui/Headline.astro";
+import Tabs from "../components/ui/Tabs.astro";
 
 const metadata = {
   title: "Now",
   description:
     "What I’m focused on right now — work, learning, reading, and small creative experiments.",
 };
+
+const nowTabs = [
+  { id: "work", label: "Work" },
+  { id: "research", label: "Research" },
+  { id: "activities", label: "Activities" },
+  { id: "off-script", label: "Off-script" },
+] as const;
+
+const p = (id: (typeof nowTabs)[number]["id"]) => `panel-now-${id}`;
 ---
 
 <BaseLayout {metadata}>
@@ -26,41 +36,48 @@ const metadata = {
 
       <p class="text-xs text-muted-foreground">Last updated: March 2026</p>
 
-      <div class="space-y-6 text-sm leading-relaxed text-foreground">
-        <div>
-          <h2 class="text-base font-semibold">Work</h2>
-          <p class="mt-1 text-muted-foreground">
-            Building and refining AI systems for industrial monitoring and
-            energy efficiency — especially around how operators actually
-            interact with models in the control room.
+      <Tabs tabs={[...nowTabs]} idPrefix="now">
+        <div id={p("work")} data-tab-panel="work" class="text-sm leading-relaxed text-muted-foreground">
+          <p>
+            Building and refining AI systems for industrial monitoring and energy
+            efficiency — especially around how operators actually interact with models in
+            the control room.
           </p>
         </div>
 
-        <div>
-          <h2 class="text-base font-semibold">Learning</h2>
-          <p class="mt-1 text-muted-foreground">
-            Exploring time-series ML architectures, physics-informed models, and
-            better ways to blend domain intuition with data-driven methods.
+        <div
+          id={p("research")}
+          data-tab-panel="research"
+          class="text-sm leading-relaxed text-muted-foreground"
+        >
+          <p>
+            Exploring time-series ML architectures, physics-informed models, and better
+            ways to blend domain intuition with data-driven methods.
           </p>
         </div>
 
-        <div>
-          <h2 class="text-base font-semibold">Reading</h2>
-          <p class="mt-1 text-muted-foreground">
-            A mix of systems thinking, industrial automation, and books that
-            have nothing to do with work but quietly change how I see it.
+        <div
+          id={p("activities")}
+          data-tab-panel="activities"
+          class="text-sm leading-relaxed text-muted-foreground"
+        >
+          <p>
+            A mix of systems thinking, industrial automation, and books that have nothing
+            to do with work but quietly change how I see it.
           </p>
         </div>
 
-        <div>
-          <h2 class="text-base font-semibold">Creative</h2>
-          <p class="mt-1 text-muted-foreground">
-            Playing with short poems, slide design experiments, and sketches for
-            how to visually explain invisible things like energy flows and
-            machine states.
+        <div
+          id={p("off-script")}
+          data-tab-panel="off-script"
+          class="text-sm leading-relaxed text-muted-foreground"
+        >
+          <p>
+            Playing with short poems, slide design experiments, and sketches for how to
+            visually explain invisible things like energy flows and machine states.
           </p>
         </div>
-      </div>
+      </Tabs>
     </div>
   </section>
 </BaseLayout>
