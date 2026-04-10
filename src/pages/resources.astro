@@ -2,6 +2,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Headline from "../components/ui/Headline.astro";
 import Tabs from "../components/ui/Tabs.astro";
+import { getEntry } from "astro:content";
+import { parseResourcesBody } from "../lib/parse-resources-body";
 
 const metadata = {
   title: "Resources",
@@ -9,16 +11,11 @@ const metadata = {
     "Books, tools, and links I keep recommending around AI systems, manufacturing, and thinking clearly.",
 };
 
-const resourceTabs = [
-  { id: "books", label: "Books" },
-  { id: "tools", label: "Tools" },
-  { id: "links", label: "Links" },
-  { id: "podcasts", label: "Podcasts" },
-  { id: "repos", label: "Repos" },
-  { id: "papers", label: "Papers" },
-] as const;
+const entry = await getEntry("resources", "resources");
+const parsed = entry?.body ? parseResourcesBody(entry.body) : { sections: [] };
+const resourceTabs = parsed.sections.map((s) => ({ id: s.id, label: s.label }));
 
-const p = (id: (typeof resourceTabs)[number]["id"]) => `panel-resources-${id}`;
+const p = (id: string) => `panel-resources-${id}`;
 ---
 
 <BaseLayout {metadata}>
@@ -36,73 +33,70 @@ const p = (id: (typeof resourceTabs)[number]["id"]) => `panel-resources-${id}`;
         }}
       />
 
-      <Tabs tabs={[...resourceTabs]} idPrefix="resources">
-        <div id={p("books")} data-tab-panel="books" class="text-sm text-muted-foreground">
-          <ul class="space-y-2">
-            <li>
-              <span class="font-medium text-foreground">
-                (Placeholder) Systems thinking &amp; feedback
-              </span>
-              — book I reach for when I need to zoom out and think in loops, not lines.
-            </li>
-            <li>
-              <span class="font-medium text-foreground">
-                (Placeholder) Industrial data &amp; controls
-              </span>
-              — something that bridges control systems, sensors, and data engineering.
-            </li>
-          </ul>
-        </div>
-
-        <div id={p("tools")} data-tab-panel="tools" class="text-sm text-muted-foreground">
-          <ul class="space-y-2">
-            <li>
-              Simple notebooks, good plotting tools, and a clear data log are still the
-              most underrated “ML tools” I know.
-            </li>
-            <li>
-              I’ll add specific libraries and platforms here once I’ve written about how I
-              use them in real projects.
-            </li>
-          </ul>
-        </div>
-
-        <div id={p("links")} data-tab-panel="links" class="text-sm text-muted-foreground">
-          <p>
-            I’ll eventually collect talks, papers, and essays here — with a short note on
-            why each link matters, not just a long list.
+      {
+        resourceTabs.length === 0 ? (
+          <p class="text-sm text-muted-foreground">
+            Resources are not configured yet. Add{" "}
+            <code class="rounded bg-muted px-1 py-0.5 text-foreground">src/content/resources.md</code>{" "}
+            with <code class="rounded bg-muted px-1 py-0.5 text-foreground">##</code> section headings.
           </p>
-        </div>
-
-        <div
-          id={p("podcasts")}
-          data-tab-panel="podcasts"
-          class="text-sm text-muted-foreground"
-        >
-          <p>
-            Podcasts I replay or send to teammates when a topic comes up — long-form
-            interviews, industry shows, and the occasional story-driven series. I’ll add
-            concrete titles and episodes as I keep a running list.
-          </p>
-        </div>
-
-        <div id={p("repos")} data-tab-panel="repos" class="text-sm text-muted-foreground">
-          <p>
-            Open-source repos I’ve learned from or contributed to — reference
-            implementations, small utilities, and bigger systems worth reading even if you
-            don’t clone them. Nothing listed yet; this tab is a placeholder until I curate
-            it properly.
-          </p>
-        </div>
-
-        <div id={p("papers")} data-tab-panel="papers" class="text-sm text-muted-foreground">
-          <p>
-            Papers and technical reports I return to for foundations (time series,
-            physics-informed models, reliability). I’ll add each with a one-line “why it
-            stuck” note instead of dumping arXiv links without context.
-          </p>
-        </div>
-      </Tabs>
+        ) : (
+          <Tabs tabs={resourceTabs} idPrefix="resources">
+            {parsed.sections.map((section) => (
+              <div
+                id={p(section.id)}
+                data-tab-panel={section.id}
+                class="text-sm text-muted-foreground"
+              >
+                {section.intro ? (
+                  <p class="mb-4 whitespace-pre-line">{section.intro}</p>
+                ) : null}
+                {section.items.length === 0 && !section.intro ? (
+                  <p>Nothing listed yet.</p>
+                ) : section.items.length > 0 ? (
+                  <ul class="space-y-4">
+                    {section.items.map((item) => (
+                      <li>
+                        <div class="font-medium text-foreground">
+                          {item.href && item.linkLabel === undefined ? (
+                            <a
+                              href={item.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="hover:underline"
+                            >
+                              {item.title}
+                            </a>
+                          ) : (
+                            <span>{item.title}</span>
+                          )}
+                        </div>
+                        {item.description ? (
+                          <p class="mt-1 whitespace-pre-line text-muted-foreground">
+                            {item.description}
+                          </p>
+                        ) : null}
+                        {item.href && item.linkLabel !== undefined ? (
+                          <p class="mt-1">
+                            <a
+                              href={item.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="text-foreground underline-offset-2 hover:underline"
+                            >
+                              {item.linkLabel}
+                            </a>
+                          </p>
+                        ) : null}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
+            ))}
+          </Tabs>
+        )
+      }
     </div>
   </section>
 </BaseLayout>

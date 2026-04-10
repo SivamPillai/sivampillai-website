@@ -112,6 +112,11 @@ const design = defineCollection({
   }),
 });
 
+const resources = defineCollection({
+  loader: glob({ pattern: "resources.md", base: "./src/content" }),
+  schema: z.object({}).passthrough(),
+});
+
 export const collections = {
   blog,
   projects,
@@ -122,4 +127,5 @@ export const collections = {
   poetry,
   photography,
   design,
+  resources,
 };
