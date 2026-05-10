@@ -44,7 +44,10 @@ const essays = defineCollection({
     subtitle: z.string().optional(),
     author: z.string().optional(),
     category: z.string().optional(),
+    /** Hero / OG / list thumbnails; keep set when `pdf` is used so previews stay correct. */
     image: z.string().optional(),
+    /** Optional PDF in Storage (same path style as `image`, e.g. public/essays/paper.pdf). Replaces detail hero only. */
+    pdf: z.string().optional(),
     minutesRead: z.number().optional(),
   }),
 });
