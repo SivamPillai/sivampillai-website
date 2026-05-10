@@ -107,7 +107,8 @@ const finalIgnoreTitleTemplate = metadata?.ignoreTitleTemplate || false;
         const observerOptions = {
           root: null,
           rootMargin: "0px 0px -50px 0px", // Triggers slightly before the element fully enters
-          threshold: 0.1,
+          // 0 (not 0.1): tall `.reveal` blocks can stay below the 10% visibility ratio vs. viewport.
+          threshold: 0,
         };
 
         const observer = new IntersectionObserver((entries, observer) => {

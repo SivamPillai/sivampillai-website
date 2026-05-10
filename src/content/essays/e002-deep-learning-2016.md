@@ -1,5 +1,6 @@
 ---
 title: "Evolution of Deep Learning Techniques and Tools"
+subtitle: The Ideas, Breakthroughs, and Challenges That Shaped Modern AI
 pubDate: "2016-06-01"
 description: "A technical reflection on how deep learning moved from theory to traction - 2016."
 author: "Sivam Pillai"
