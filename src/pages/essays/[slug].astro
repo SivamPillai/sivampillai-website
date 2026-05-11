@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import StoragePdfEmbed from "../../components/content/StoragePdfEmbed.astro";
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import RelatedContent from "../../components/thinking/RelatedContent.astro";
 import { getStorageImageUrl } from "../../utils/storage";
@@ -19,9 +20,10 @@ export async function getStaticPaths() {
 
 const { essay } = Astro.props as { essay: EssayEntry };
 const { Content, remarkPluginFrontmatter } = await render(essay);
-const { title, description, subtitle, pubDate, tags, image, author } =
+const { title, description, subtitle, pubDate, tags, image, pdf, author } =
   essay.data;
 const imageUrl = getStorageImageUrl(image);
+const pdfUrl = getStorageImageUrl(pdf);
 
 const formattedDate = pubDate.toLocaleDateString("en-US", {
   year: "numeric",
@@ -59,10 +61,18 @@ const metadata = {
         )}
       </div>
 
-      {imageUrl && (
-        <div class="reveal relative mb-8 h-96 w-full overflow-hidden rounded-xl shadow-lg">
-          <img src={imageUrl} alt={title} class="h-full w-full object-cover" />
-        </div>
+      {pdfUrl && pdf ? (
+        <StoragePdfEmbed path={pdf} title={title} />
+      ) : (
+        imageUrl && (
+          <div class="reveal relative mb-8 h-96 w-full overflow-hidden rounded-xl shadow-lg">
+            <img
+              src={imageUrl}
+              alt={title}
+              class="h-full w-full object-cover"
+            />
+          </div>
+        )
       )}
 
       <div class="mb-4 flex flex-wrap gap-2 text-xs text-muted-foreground">
