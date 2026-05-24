@@ -1,10 +1,11 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import { getCollection, render } from "astro:content";
+import { getPublishedCollection } from "../../../lib/content";
+import { render } from "astro:content";
 import { getStorageImageUrl } from "../../../utils/storage";
 
 export async function getStaticPaths() {
-  const entries = await getCollection("photography");
+  const entries = await getPublishedCollection("photography");
   return entries.map((entry) => {
     const slug =
       (entry as { id: string; slug?: string }).slug ?? entry.id;

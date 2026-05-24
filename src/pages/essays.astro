@@ -1,9 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
+import { getPublishedCollection } from "../lib/content";
 import Headline from "../components/ui/Headline.astro";
 
-const essays = (await getCollection("essays")).sort(
+const essays = (await getPublishedCollection("essays")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 

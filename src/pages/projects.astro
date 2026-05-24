@@ -1,9 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
+import { getPublishedCollection } from "../lib/content";
 import Headline from "../components/ui/Headline.astro";
 
-const projects = await getCollection("projects");
+const projects = await getPublishedCollection("projects");
 
 const metadata = {
   title: "Projects",

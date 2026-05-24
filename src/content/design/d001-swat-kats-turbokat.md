@@ -4,6 +4,7 @@ description: "Placeholder note on how I think about structuring technical slide 
 pubDate: 2025-12-05
 author: "Sivam Pillai"
 medium: "Slide design"
+publishStatus: wip
 tags: ["design", "communication", "storytelling"]
 ---
 

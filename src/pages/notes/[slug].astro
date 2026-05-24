@@ -1,13 +1,14 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getCollection, render, type CollectionEntry } from "astro:content";
+import { getPublishedCollection } from "../../lib/content";
+import { render, type CollectionEntry } from "astro:content";
 import Headline from "../../components/ui/Headline.astro";
 import RelatedContent from "../../components/thinking/RelatedContent.astro";
 
 type NoteEntry = CollectionEntry<"notes">;
 
 export async function getStaticPaths() {
-  const notes = await getCollection("notes");
+  const notes = await getPublishedCollection("notes");
   return notes.map((note) => {
     const slug = (note as { id: string; slug?: string }).slug ?? note.id;
     return {

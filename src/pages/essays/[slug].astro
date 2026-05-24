@@ -1,14 +1,15 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import StoragePdfEmbed from "../../components/content/StoragePdfEmbed.astro";
-import { getCollection, render, type CollectionEntry } from "astro:content";
+import { getPublishedCollection } from "../../lib/content";
+import { render, type CollectionEntry } from "astro:content";
 import RelatedContent from "../../components/thinking/RelatedContent.astro";
 import { getStorageImageUrl } from "../../utils/storage";
 
 type EssayEntry = CollectionEntry<"essays">;
 
 export async function getStaticPaths() {
-  const essays = await getCollection("essays");
+  const essays = await getPublishedCollection("essays");
   return essays.map((essay) => {
     const slug = (essay as { id: string; slug?: string }).slug ?? essay.id;
     return {

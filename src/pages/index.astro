@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { siteConfig } from "../config/site";
 import Hero from "../components/widgets/Hero.astro";
 import Headline from "../components/ui/Headline.astro";
-import { getCollection } from "astro:content";
+import { getPublishedCollection } from "../lib/content";
 
 const metadata = {
   title: `${siteConfig.name} — AI systems, manufacturing, ideas, and musings`,
@@ -13,10 +13,10 @@ const metadata = {
 };
 
 const [projects, essays, quotes, poetry] = await Promise.all([
-  getCollection("projects"),
-  getCollection("essays"),
-  getCollection("quotes"),
-  getCollection("poetry"),
+  getPublishedCollection("projects"),
+  getPublishedCollection("essays"),
+  getPublishedCollection("quotes"),
+  getPublishedCollection("poetry"),
 ]);
 
 const featuredProject = projects[0];
