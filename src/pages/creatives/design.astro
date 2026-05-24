@@ -1,10 +1,10 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
+import { getPublishedCollection } from "../../lib/content";
 import Headline from "../../components/ui/Headline.astro";
 import { getStorageImageUrl } from "../../utils/storage";
 
-const design = (await getCollection("design")).sort(
+const design = (await getPublishedCollection("design")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 

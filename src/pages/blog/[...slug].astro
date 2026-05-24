@@ -4,10 +4,11 @@ import Schema from "../../components/seo/Schema.astro";
 import RelatedContent from "../../components/thinking/RelatedContent.astro";
 import { getStorageImageUrl } from "../../utils/storage";
 
-import { getCollection, render } from "astro:content";
+import { getPublishedCollection } from "../../lib/content";
+import { render } from "astro:content";
 
 export async function getStaticPaths() {
-  const blog = await getCollection("blog");
+  const blog = await getPublishedCollection("blog");
   return blog.map((post) => ({
     params: { slug: post.id },
     props: { post },

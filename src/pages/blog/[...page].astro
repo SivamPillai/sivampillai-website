@@ -1,13 +1,13 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
+import { getPublishedCollection } from "../../lib/content";
 import Headline from "../../components/ui/Headline.astro";
 import Pagination from "../../components/ui/Pagination.astro";
 import PostItem from "../../components/blog/PostItem.astro";
 import type { GetStaticPathsOptions } from "astro";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
-  const blogEntries = await getCollection("blog");
+  const blogEntries = await getPublishedCollection("blog");
   const sortedPosts = blogEntries
     .filter((post) => post.data && post.data.pubDate)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());

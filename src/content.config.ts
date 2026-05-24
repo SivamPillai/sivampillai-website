@@ -5,6 +5,9 @@ const baseFields = {
   title: z.string(),
   description: z.string().optional(),
   tags: z.array(z.string()).default([]),
+  publishStatus: z
+    .enum(["wip", "draft", "published"])
+    .default("published"),
 };
 
 const datedFields = {

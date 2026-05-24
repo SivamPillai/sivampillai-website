@@ -1,5 +1,6 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
+import { type CollectionEntry } from "astro:content";
+import { getPublishedCollection } from "../../lib/content";
 import Headline from "../ui/Headline.astro";
 
 interface Props {
@@ -33,7 +34,9 @@ async function getRelated() {
   const results: Record<string, AnyEntry[]> = {};
 
   for (const name of allCollections) {
-    const entries = (await getCollection(name as CollectionName)) as AnyEntry[];
+    const entries = (await getPublishedCollection(
+      name as CollectionName,
+    )) as AnyEntry[];
     const related = entries
       .filter((entry: AnyEntry) => entry.id !== currentId)
       .filter((entry: AnyEntry) => {
