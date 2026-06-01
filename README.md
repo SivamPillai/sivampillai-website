@@ -20,6 +20,7 @@ Personal website and thinking lab: **AI systems • Manufacturing • Ideas • 
 - **Resources** — Books, tools, and links.
 - **Search** — Site-wide search (Pagefind) with optional filter by section.
 - **Contact** — Footer “Contact” opens a modal form; submissions go to **contact@sivampillai.com** via [Formspree](https://formspree.io).
+- **llms.txt** — [`public/llms.txt`](public/llms.txt) at `/llms.txt` for LLM agents (site map, navigation, curated links); included in `sitemap.xml` via `@astrojs/sitemap` `customPages`.
 
 Content is connected by **tags** (Thinking Lab): essays, projects, notes, quotes, and blog posts show “Related” content at the bottom based on shared tags.
 

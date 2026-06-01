@@ -12,7 +12,12 @@ const storageBaseUrl = env.PUBLIC_STORAGE_BASE_URL ?? "";
 
 export default defineConfig({
   site: "https://sivampillai.com/",
-  integrations: [sitemap(), icon()],
+  integrations: [
+    sitemap({
+      customPages: ["https://sivampillai.com/llms.txt"],
+    }),
+    icon(),
+  ],
   markdown: {
     remarkPlugins: [
       [remarkStorageImages, storageBaseUrl],

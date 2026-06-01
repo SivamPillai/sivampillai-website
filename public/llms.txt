@@ -1,0 +1,76 @@
+# Sivam Pillai
+
+> Personal site and thinking lab of Sivam Pillai — AI systems, manufacturing, ideas, and musings. Primary topics: industrial intelligence, time-series ML, energy-aware systems, applied AI in factories, startups, and occasional creative work (poetry, design, photography).
+
+Sivam Pillai is a CTO and co-founder building applied AI for industrial systems (PhD). This is a personal blog and profile site, not a company marketing site. He publishes project case studies, essays, blog posts, short notes, quotes, and creative work. Many project and blog posts reference Zolnoi (industrial AI for manufacturing).
+
+**When to use this site vs LinkedIn:** Use this site for authored long-form thinking, project narratives, and curated resources. Use [LinkedIn](https://www.linkedin.com/in/sivampillai) for professional history, roles, and network context.
+
+**How to navigate:**
+- Main nav: Home, Projects, Writing (Essays, Blog, Quotes, Notes), Creatives (Design, Poetry, Photography), About, Now.
+- Footer also links: Collections, Resources, Search, Contact.
+- **Search:** `/search` — Pagefind full-text search over published content; filter by section.
+- **Related content:** At the bottom of many essays, blog posts, projects, notes, and quotes, items with shared `tags` are linked (Thinking Lab).
+- **Machine-readable index:** `https://sivampillai.com/sitemap.xml`
+- **Slug URLs:** Content URLs use the Markdown filename stem (e.g. `e003-llm-2026` → `/essays/e003-llm-2026`). Only entries with `publishStatus: published` appear on the live site.
+
+**Licenses:** Site code is MIT; written content is CC BY 4.0 unless noted. Attribute when reusing content.
+
+## Start here
+
+- [Home](https://sivampillai.com/): Tagline, intro, and a Featured sampler (project, essay, creative, quote).
+- [About](https://sivampillai.com/about): Bio, values, and background in industrial AI and time-series.
+- [Now](https://sivampillai.com/now): Current focus (work, research, activities, off-script); updated periodically.
+
+## Projects
+
+- [Projects index](https://sivampillai.com/projects): Industrial AI, monitoring, tools, and experiments.
+- [DataVed](https://sivampillai.com/projects/x001-dataved-tool): Streamlit time-series exploration dashboard.
+- [Eval Sakhi](https://sivampillai.com/projects/x002-evalsakhi-agent): AI evaluation agent for structured eval plans.
+- [Autobot line follower](https://sivampillai.com/projects/x003-autobot-line-follower): Early robotics competition build (2009).
+
+## Essays
+
+- [Essays index](https://sivampillai.com/essays): Longer reflective and technical pieces.
+- [What AI really unlocks](https://sivampillai.com/essays/e001-ai-unlock): Intent, abundance, and what AI changes for outcomes.
+- [Deep learning evolution (2016)](https://sivampillai.com/essays/e002-deep-learning-2016): How deep learning moved from theory to traction.
+- [Evolution of LLMs and AI systems](https://sivampillai.com/essays/e003-llm-2026): Transformers, scaling, RLHF, agents.
+- [Research papers are not supposed to be boring](https://sivampillai.com/essays/e004-writing-research-paper): Clarity and storytelling in research writing.
+- [The 5 C's that shaped my life](https://sivampillai.com/essays/e005-5cs-of-my-life): Competence, courage, confidence, connection, conscience.
+
+## Blog
+
+- [Blog index](https://sivampillai.com/blog): Posts with dates and categories; paginated.
+- [AI for Manufacturing at Bosch Fit Fest 2024](https://sivampillai.com/blog/b001-bosch-event): Zolnoi, generative AI, time-series in manufacturing.
+- [Startup lessons podcast](https://sivampillai.com/blog/b002-podcast-startup): Five lessons from building a startup.
+- [Fortune India × Nasscom Future Forge 2025](https://sivampillai.com/blog/b003-fortune-india-panel): DeepTech and AI in manufacturing panel.
+- [Why I love engineering](https://sivampillai.com/blog/b004-why-i-love-engineering): Reflection on engineering beyond machines.
+- [Sci-fi book on Amazon](https://sivampillai.com/blog/b005-i-wrote-a-book): Navad to Earth – An Odyssey.
+
+## Quotes and notes
+
+- [Quotes](https://sivampillai.com/quotes): Curated quotes with tags and optional source URLs.
+- [Notes](https://sivampillai.com/notes): Short ideas, observations, and snippets.
+- [Writing hub](https://sivampillai.com/writing): Overview linking essays, blog, quotes, notes.
+
+## Creatives
+
+- [Creatives hub](https://sivampillai.com/creatives): Entry to design, poetry, photography.
+- [Poetry](https://sivampillai.com/creatives/poetry): Poems; detail URLs under `/creatives/poetry/{slug}`.
+- [Photography](https://sivampillai.com/creatives/photography): Gallery with lightbox.
+- [Design](https://sivampillai.com/creatives/design): Slide grammar and visual storytelling (grid only).
+
+## Collections and resources
+
+- [Collections](https://sivampillai.com/collections): Curated bundles and themes.
+- [Resources](https://sivampillai.com/resources): Books, tools, links, podcasts, repos, papers.
+
+## Optional
+
+- [Search](https://sivampillai.com/search): Full-text search when you know a keyword but not the section.
+- [Contact](https://sivampillai.com/contact): Contact page; footer modal also submits via Formspree.
+- [LinkedIn](https://www.linkedin.com/in/sivampillai): Professional profile.
+- [X](https://x.com/SivamPillai): Short updates and commentary.
+- [GitHub](https://github.com/sivampillai): Code and open-source work.
+- [Medium](https://medium.com/@drspill): Cross-posted or alternate publishing.
+- [Instagram](https://www.instagram.com/sivampillai): Personal and social.
